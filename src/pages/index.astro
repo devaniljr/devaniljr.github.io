@@ -1,0 +1,243 @@
+---
+import PageLayout from '../layouts/BaseLayout.astro'
+import Section from '../components/Section.astro'
+import Card from '../components/Card.astro'
+import ProjectCard from '../components/ProjectCard.astro'
+import Label from '../components/Label.astro'
+import SkillLayout from '../components/SkillLayout.astro'
+import PostPreview from '@/components/blog/PostPreview.astro'
+
+import { Image } from 'astro:assets'
+import devanil from '../assets/devanil.jpg'
+import rails from '../assets/rails.webp'
+import react from '../assets/react.webp'
+
+import { getAllPosts, sortMDByDate } from '@/utils'
+
+const languages = ['Ruby', 'Python', 'JavaScript', 'TypeScript']
+const frontend = ['Hotwire', 'React']
+const backend = ['Ruby on Rails']
+const others = ['Git', 'AI', 'PostgreSQL', 'Redis', 'Memcached', 'Tailwind', 'Rspec', 'Minitest', 'Sidekiq', 'Docker', 'Kubernetes', 'Kamal']
+
+const MAX_POSTS = 10
+const allPosts = await getAllPosts()
+const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
+---
+
+<PageLayout meta={{ title: 'Home' }}>
+	<div class='flex w-full flex-col gap-y-10'>
+		<section class='flex flex-col items-center gap-y-7'>
+			<Image
+				src={devanil}
+				alt='profile photo'
+				class='h-44 w-auto rounded-full bg-[#FED283] p-2'
+				loading='eager'
+			/>
+
+			<div class='flex flex-col items-center gap-y-4'>
+				<h1 class='text-3xl font-bold'>Devanil Júnior</h1>
+				<a
+					href='https://www.linkedin.com/in/devaniljr/'
+					class='flex flex-row items-center gap-x-3 rounded-3xl border border-input px-4 py-2 text-sm shadow-sm transition-all hover:shadow-md'
+				>
+					<span class='relative flex items-center justify-center'>
+						<span
+							class='absolute inline-flex h-2 w-2 animate-ping rounded-full border border-green-400 bg-green-400 opacity-75'
+						></span>
+						<span class='relative inline-flex h-2 w-2 rounded-full bg-green-400'></span>
+					</span>
+
+					<p class='font-medium'>Contact me on LinkedIn</p>
+				</a>
+				<div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
+					<Label title='Brazil'>
+						<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' class='h-5 w-5' slot='icon'
+							><path
+								fill='currentColor'
+								d='M12.003 11.73q.668 0 1.14-.475q.472-.475.472-1.143t-.475-1.14q-.476-.472-1.143-.472t-1.14.476q-.472.475-.472 1.143t.475 1.14q.476.472 1.143.472M12 19.677q2.82-2.454 4.458-4.991q1.638-2.538 1.638-4.39q0-2.744-1.737-4.53T12 3.981q-2.621 0-4.359 1.785t-1.737 4.53q0 1.852 1.638 4.39q1.639 2.537 4.458 4.99m0 1.343q-3.525-3.117-5.31-5.814q-1.786-2.697-1.786-4.909q0-3.173 2.066-5.234Q9.037 3 12 3t5.03 2.062q2.066 2.061 2.066 5.234q0 2.212-1.785 4.909q-1.786 2.697-5.311 5.814m0-10.904'
+							></path></svg
+						>
+					</Label>
+					<Label title='devaniljmg@gmail.com'>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" slot='icon' stroke="currentColor" class="h-4 w-4">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
+						</svg>
+						
+					</Label>
+				</div>
+			</div>
+		</section>
+
+		<Section title='About'>
+			<p class='text-muted-foreground'>
+				I see myself as a developer who combines both the artistry and scientific approach of the software development. While honing my logical skills to master programming tools, I also embrace programming as a creative process that ultimately impacts people's lives.
+			</p>
+			<p class='text-muted-foreground'>
+				I specialize in 
+				<Image src={rails} alt="Ruby on Rails icon" class="inline-block w-4 h-4 align-text-bottom mx-0.5" />
+				<strong>Ruby on Rails</strong> for backend solutions and ⚡ <strong>Hotwire</strong> and 
+				<Image src={react} alt="React icon" class="inline-block w-4 h-4 align-text-bottom mx-0.5" />
+				<strong>React</strong> for frontend development, but I am continually expanding my knowledge in various other technologies as well.
+			</p>
+		</Section>
+		{
+			allPostsByDate.length > 0 && (
+				<Section title='Posts'>
+					<ul class='flex flex-col gap-y-2'>
+						{allPostsByDate.map((p) => (
+							<li class='flex flex-col gap-x-2 sm:flex-row'>
+								<PostPreview post={p} />
+							</li>
+						))}
+					</ul>
+				</Section>
+			)
+		}
+
+		<Section title='Experience'>
+			<Card
+				heading='Software Engineer'
+				subheading='at Jus.com.br'
+				date='since 2023 february'
+				imagePath='/src/assets/jus.jpeg'
+				altText='Lorem, ipsum dolor sit'
+				imageClass='h-12 w-auto md:-left-16'
+			>
+				<p>One of the largest law-related websites in Brazil.</p>
+
+				<ul class='ml-4 list-disc text-muted-foreground'>
+					<li>
+						Built, maintained and scaled a Ruby on Rails monolith
+					</li>
+
+					<li>
+						Extensive test coverage with MiniTest
+					</li>
+
+					<li>
+						Railway Oriented Programming and DDD principles
+					</li>
+
+					<li>
+						Work with PostgreSQL, MySQL, Redis, Sidekiq, Memcached and ElasticSearch
+					</li>
+
+					<li>
+						Basic understanding of Kubernetes and Docker
+					</li>
+
+				</ul>
+			</Card>
+			<Card
+				heading='Software Engineer'
+				subheading='at Agenda Edu'
+				date='Sep 2022 - Jan 2024'
+				imagePath='/src/assets/agendaedu.png'
+				altText='Lorem, ipsum dolor sit'
+				imageClass='h-12 w-auto md:-left-16'
+			>
+				<p>A startup that aims to improve communication between schools and parents.</p>
+				<ul class='ml-4 list-disc text-muted-foreground'>
+					<li>
+						Ruby on Rails as API
+					</li>
+
+					<li>
+						Used Rspec for testing
+					</li>
+				</ul>
+			</Card>
+			<Card
+				heading='Software Engineer'
+				subheading='at Agência Mares'
+				date='Aug 2021 - Sep 2022'
+				imagePath='/src/assets/mares.jpeg'
+				altText='Lorem, ipsum dolor sit'
+				imageClass='h-12 w-auto md:-left-16'
+			>
+				<p>A consultancy company.</p>
+				<ul class='ml-4 list-disc text-muted-foreground'>
+					<li>
+						Developed projects with React, Next.js and Vue
+					</li>
+
+					<li>
+						Implemented backend APIs
+					</li>
+
+					<li>
+						Deployed applications using Docker and Azure
+					</li>
+				</ul>
+			</Card>
+			<Card
+				heading='Software Engineer'
+				subheading='at Rondonia Government'
+				date='Apr 2019 - Jul 2021'
+				imagePath='/src/assets/rondonia.png'
+				altText='Lorem, ipsum dolor sit'
+				imageClass='h-12 w-auto md:-left-16'
+			>
+				<p>Government of the state of Rondônia, Brazil.</p>
+				<ul class='ml-4 list-disc text-muted-foreground'>
+					<li>
+						Developed projects with Wordpress and Ruby on Rails
+					</li>
+				</ul>
+			</Card>
+		</Section>
+
+		<Section title='Education'>
+			<Card
+				heading='Computer Science'
+				subheading='at Wyden'
+				date='2024 - 2028'
+				imagePath='/src/assets/wyden.png'
+				altText='Lorem, ipsum dolor sit'
+				imageClass='w-12 md:-left-16'
+			>
+			</Card>
+			<Card
+				heading='Communication (Journalism)'
+				subheading='at Uniron'
+				date='2015 - 2019'
+				imagePath='/src/assets/uniron.png'
+				altText='Lorem, ipsum dolor sit'
+				imageClass='w-12 md:-left-16'
+			/>
+		</Section>
+
+		<Section title='Projects'>
+			<div class='flex flex-col gap-y-3 sm:flex-row sm:gap-x-3 sm:gap-y-0'>
+				<ProjectCard
+					href='https://github.com/devaniljr/context-organizer'
+					heading='Context Organizer'
+					subheading='A VS Code extension to organize your files into contexts'
+					imagePath='/src/assets/context-organizer.png'
+					altText='Example'
+					class='w-full sm:w-1/2'
+				/>
+			</div>
+		</Section>
+
+		<Section title='Skills'>
+			<SkillLayout title='Languages' skills={languages} />
+			<SkillLayout title='Frontend' skills={frontend} />
+			<SkillLayout title='Backend' skills={backend} />
+			<SkillLayout title='Others' skills={others} />
+		</Section>
+	</div>
+	<a
+		href='https://www.linkedin.com/in/devaniljr/'
+		class='mt-16 flex flex-row items-center gap-x-3 rounded-3xl border border-input px-4 py-2 text-sm shadow-sm transition-all hover:shadow-md'
+	>
+		<span class='relative flex items-center justify-center'>
+			<span
+				class='absolute inline-flex h-2 w-2 animate-ping rounded-full border border-green-400 bg-green-400 opacity-75'
+			></span>
+			<span class='relative inline-flex h-2 w-2 rounded-full bg-green-400'></span>
+		</span>
+
+		<p class='font-medium'>Contact me on LinkedIn</p>
+	</a>
+</PageLayout>
