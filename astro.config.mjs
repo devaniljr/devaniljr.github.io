@@ -10,8 +10,6 @@ import { expressiveCodeOptions } from './src/site.config'
 import icon from 'astro-icon'
 import remarkMermaid from 'remark-mermaidjs'
 
-import vercel from '@astrojs/vercel/serverless'
-
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://devanil.dev',
@@ -42,8 +40,5 @@ export default defineConfig({
 		}
 	},
 	prefetch: true,
-	output: 'server',
-	adapter: vercel({
-		webAnalytics: { enabled: true }
-	})
+	output: 'static'
 })
