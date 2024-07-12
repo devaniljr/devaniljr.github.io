@@ -15,9 +15,9 @@ import react from '../assets/react.webp'
 import { getAllPosts, sortMDByDate } from '@/utils'
 
 const languages = ['Ruby', 'Python', 'JavaScript', 'TypeScript']
-const frontend = ['Hotwire', 'React']
-const backend = ['Ruby on Rails']
-const others = ['Git', 'AI', 'PostgreSQL', 'Redis', 'Memcached', 'Tailwind', 'Rspec', 'Minitest', 'Sidekiq', 'Docker', 'Kubernetes', 'Kamal']
+const frontend = ['Hotwire', 'React', 'Tailwind', 'Bootstrap', 'HTML', 'CSS']
+const backend = ['Ruby on Rails', 'PostgreSQL', 'Redis', 'Memcached', 'ElasticSearch', 'Sidekiq', 'Solid Queue', 'Rspec', 'MiniTest']
+const others = ['Git', 'AI', 'Docker', 'Kubernetes', 'Kamal', 'Digital Ocean']
 
 const MAX_POSTS = 10
 const allPosts = await getAllPosts()
@@ -70,7 +70,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 
 		<Section title='About'>
 			<p class='text-muted-foreground'>
-				I see myself as a developer who combines both the artistry and scientific approach of the software development. While honing my logical skills to master programming tools, I also embrace programming as a creative process that ultimately impacts people's lives.
+				Hi, I'm Devanil and I like to see myself as a software developer who combines technical skills with a product-focused mindset. I am deeply committed to maintaining well-structured code, with a particular passion for OOP and architecture. I actively develop my communication skills to effectively bridge business objectives with user value. I thrive in methodologies that promote autonomy and asynchronous communication.
 			</p>
 			<p class='text-muted-foreground'>
 				I specialize in 
