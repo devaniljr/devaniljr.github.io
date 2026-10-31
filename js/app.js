@@ -1,34 +1,39 @@
 /**
  * Lojinha do Dev - Frontend Application
- * Design limpo, foco nos livros, fotos detalhadas e checkout WhatsApp.
+ * Design aconchegante (cozy), grid 100% uniforme, suporte a múltiplas categorias,
+ * galeria de fotos com legendas e checkout WhatsApp.
  */
 
+// Configurações Globais
 const CONFIG = {
   WHATSAPP_NUMBER: '5569993306972',
   STORAGE_CART_KEY: 'lojinha_dev_cart_v1',
   DATA_URL: './produtos.json'
 };
 
+// Estado da Aplicação
 const state = {
-  allProducts: [],
-  filteredProducts: [],
-  currentCategory: 'todos',
-  cart: [],
-  activeModalBook: null,
-  modalAngles: []
+  allProducts: [],        // Apenas produtos disponíveis (vendido === false)
+  filteredProducts: [],   // Produtos filtrados pela categoria/busca/ordenação
+  currentCategory: 'todos',// Categoria ativa
+  cart: [],               // Itens na sacola
+  activeModalBook: null,  // Livro atualmente aberto no modal
+  modalAngles: []         // Ângulos do livro no modal
 };
 
+// Nomes amigáveis e aconchegantes para o cabeçalho
 const CATEGORY_NAMES = {
-  'todos': 'Todos os Livros',
-  'especiais': 'Edições Especiais',
-  'programação': 'Programação',
-  'filosofia': 'Filosofia',
-  'ciência': 'Ciência',
-  'inglês': 'Inglês',
-  'espanhol': 'Espanhol',
-  'concursos': 'Concursos'
+  'todos': '📚 Todos os Livros',
+  'especiais': '⭐ Edições Especiais',
+  'programação': '💻 Livros de Programação',
+  'filosofia': '🏛️ Livros de Filosofia',
+  'ciência': '🔬 Livros de Ciência',
+  'inglês': '🇬🇧 Livros em Inglês & Gramática',
+  'espanhol': '🇪🇸 Livros em Espanhol & Gramática',
+  'concursos': '⚖️ Livros para Concursos Públicos'
 };
 
+// Elementos do DOM
 const DOM = {
   productGrid: document.getElementById('productGrid'),
   catalogCount: document.getElementById('catalogCount'),
@@ -40,7 +45,7 @@ const DOM = {
   sortSelect: document.getElementById('sortSelect'),
   categoriesNav: document.getElementById('categoriesNav'),
 
-  // Modal
+  // Modal de Detalhes
   bookModal: document.getElementById('bookModal'),
   modalCloseBtn: document.getElementById('modalCloseBtn'),
   galleryMainImg: document.getElementById('galleryMainImg'),
@@ -65,6 +70,8 @@ const DOM = {
   cartEmptyState: document.getElementById('cartEmptyState'),
   cartFooter: document.getElementById('cartFooter'),
   cartCountBadge: document.getElementById('cartCountBadge'),
+  cartTotalItemsCount: document.getElementById('cartTotalItemsCount'),
+  cartSubtotalValue: document.getElementById('cartSubtotalValue'),
   cartTotalValue: document.getElementById('cartTotalValue'),
   customerNameInput: document.getElementById('customerNameInput'),
   customerAddressInput: document.getElementById('customerAddressInput'),
@@ -72,9 +79,11 @@ const DOM = {
   cartClearBtn: document.getElementById('cartClearBtn'),
   cartStartShoppingBtn: document.getElementById('cartStartShoppingBtn'),
 
+  // Toast
   toastContainer: document.getElementById('toastContainer')
 };
 
+// Formatação de Moeda BRL
 function formatBRL(value) {
   const number = Number(value) || 0;
   return number.toLocaleString('pt-BR', {
@@ -83,6 +92,7 @@ function formatBRL(value) {
   });
 }
 
+// Normalização para filtros
 function normalizeText(text) {
   return (text || '')
     .toString()
@@ -92,6 +102,7 @@ function normalizeText(text) {
     .trim();
 }
 
+// Retorna sempre um array de categorias
 function getBookCategories(book) {
   if (Array.isArray(book.categorias)) return book.categorias;
   if (Array.isArray(book.categoria)) return book.categoria;
@@ -104,58 +115,68 @@ function getBookCategories(book) {
   return [];
 }
 
-// Inicialização
+// ==========================================================================
+// 1. Inicialização
+// ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
   loadCartFromStorage();
   fetchProducts();
   setupEventListeners();
 });
 
-// Carregamento dos Produtos
+// ==========================================================================
+// 2. Carregamento dos Produtos (produtos.json)
+// ==========================================================================
 async function fetchProducts() {
   try {
     const res = await fetch(`${CONFIG.DATA_URL}?_=${Date.now()}`);
     if (!res.ok) throw new Error(`Erro HTTP: ${res.status}`);
     const rawData = await res.json();
 
-    // Filtra vendidos: vendido === true NUNCA aparece na loja
+    // REGRA FUNDAMENTAL: Se vendido for true, NUNCA aparece na loja
     state.allProducts = (Array.isArray(rawData) ? rawData : [])
       .filter(item => item && item.vendido !== true && item.vendido !== 'true');
 
     applyFiltersAndSort();
   } catch (error) {
-    console.error('Erro ao carregar produtos:', error);
+    console.error('Falha ao carregar catálogo:', error);
     DOM.productGrid.innerHTML = `
       <div class="empty-state">
-        <p>Não foi possível carregar os livros no momento.</p>
-        <button onclick="location.reload()" class="btn btn-secondary btn-sm">Tentar Novamente</button>
+        <div class="empty-icon">⚠️</div>
+        <h3>Ops! Não conseguimos carregar a estante.</h3>
+        <p>Verifique sua conexão ou recarregue a página.</p>
+        <button onclick="location.reload()" class="btn btn-secondary">Tentar Novamente</button>
       </div>
     `;
+    DOM.catalogCount.textContent = 'Indisponível no momento';
   }
 }
 
-// Filtros e Ordenação
+// ==========================================================================
+// 3. Filtros (Múltiplas Categorias, Busca e Ordenação)
+// ==========================================================================
 function applyFiltersAndSort() {
   const query = (DOM.searchInput.value || '').trim().toLowerCase();
   const sort = DOM.sortSelect.value;
   const activeCat = state.currentCategory;
 
   let list = state.allProducts.filter(book => {
-    // Categoria
+    // 1. Filtro por Múltiplas Categorias
     if (activeCat !== 'todos') {
       const bookCats = getBookCategories(book).map(c => normalizeText(c));
-      if (!bookCats.includes(normalizeText(activeCat))) {
+      const targetCat = normalizeText(activeCat);
+      if (!bookCats.includes(targetCat)) {
         return false;
       }
     }
 
-    // Busca textual
+    // 2. Filtro por Busca Textual
     if (query) {
       const title = (book.nome || '').toLowerCase();
       const author = (book.autor || '').toLowerCase();
       const desc = (book.descricao || '').toLowerCase();
-      const cats = getBookCategories(book).join(' ').toLowerCase();
-      if (!title.includes(query) && !author.includes(query) && !desc.includes(query) && !cats.includes(query)) {
+      const catsString = getBookCategories(book).join(' ').toLowerCase();
+      if (!title.includes(query) && !author.includes(query) && !desc.includes(query) && !catsString.includes(query)) {
         return false;
       }
     }
@@ -163,7 +184,7 @@ function applyFiltersAndSort() {
     return true;
   });
 
-  // Ordenação
+  // 3. Ordenação
   if (sort === 'price-asc') {
     list.sort((a, b) => Number(a.valor || 0) - Number(b.valor || 0));
   } else if (sort === 'price-desc') {
@@ -176,11 +197,17 @@ function applyFiltersAndSort() {
   renderCatalog();
 }
 
-// Renderização do Catálogo (Cards Limpos)
+// ==========================================================================
+// 4. Renderização do Catálogo (Grid 100% Uniforme & Alinhado)
+// ==========================================================================
 function renderCatalog() {
   const count = state.filteredProducts.length;
-  DOM.catalogCount.textContent = `${count} ${count === 1 ? 'livro' : 'livros'}`;
-  DOM.currentCategoryHeading.textContent = CATEGORY_NAMES[state.currentCategory] || 'Livros';
+  DOM.catalogCount.textContent = `${count} ${count === 1 ? 'livro disponível' : 'livros disponíveis'}`;
+
+  // Título aconchegante da categoria ativa
+  DOM.currentCategoryHeading.textContent = CATEGORY_NAMES[state.currentCategory] || 'Todos os Livros';
+
+  // Botão limpar busca
   DOM.clearSearchBtn.style.display = DOM.searchInput.value ? 'block' : 'none';
 
   if (count === 0) {
@@ -194,38 +221,46 @@ function renderCatalog() {
 
   DOM.productGrid.innerHTML = state.filteredProducts.map(book => {
     const coverUrl = (book.imagens && book.imagens.frente) ? book.imagens.frente : 'images/placeholder-book.svg';
-    const author = book.autor || '';
     const condition = book.estado || 'Seminovo';
+    const author = book.autor || 'Autor não informado';
+    const cats = getBookCategories(book);
+    const categoryBadge = cats.length > 0 ? cats[0] : 'Livro';
 
     return `
       <article class="book-card" data-id="${book.id}">
         <div class="book-card__cover-wrap" onclick="openBookModal('${book.id}')">
+          <div class="book-card__badges-overlay">
+            <span class="book-card__condition-badge">${condition}</span>
+            <span class="book-card__category-badge">${categoryBadge}</span>
+          </div>
+
           <img 
             src="${coverUrl}" 
-            alt="${book.nome}" 
+            alt="Capa de ${book.nome}" 
             class="book-card__cover" 
             loading="lazy"
             onerror="this.src='images/placeholder-book.svg'"
           >
+          <span class="book-card__inspect-hint">🔍 Ver fotos e detalhes</span>
         </div>
 
         <div class="book-card__body">
-          <div class="book-card__meta">
-            <span class="book-card__condition">${condition}</span>
-          </div>
-
           <h3 class="book-card__title" onclick="openBookModal('${book.id}')" title="${book.nome}">
             ${book.nome}
           </h3>
-          ${author ? `<p class="book-card__author">${author}</p>` : ''}
+          <p class="book-card__author">${author}</p>
 
           <div class="book-card__footer">
-            <span class="book-card__price">${formatBRL(book.valor)}</span>
+            <div class="book-card__price-row">
+              <span class="book-card__price">${formatBRL(book.valor)}</span>
+              <span class="book-card__shipping-note">✓ Frete Grátis</span>
+            </div>
+
             <div class="book-card__actions">
-              <button class="btn btn-secondary btn-sm" onclick="openBookModal('${book.id}')">
-                Fotos
+              <button class="btn btn-secondary btn-sm" onclick="openBookModal('${book.id}')" title="Ver fotos e detalhes deste exemplar">
+                🔍 Fotos
               </button>
-              <button class="btn btn-primary btn-sm" onclick="handleAddToCart('${book.id}')">
+              <button class="btn btn-primary btn-sm" onclick="handleAddToCart('${book.id}')" title="Adicionar à sacola">
                 + Sacola
               </button>
             </div>
@@ -236,7 +271,9 @@ function renderCatalog() {
   }).join('');
 }
 
-// Modal de Fotos e Detalhes
+// ==========================================================================
+// 5. Modal de Detalhes e Fotos do Livro
+// ==========================================================================
 window.openBookModal = function(bookId) {
   const book = state.allProducts.find(b => String(b.id) === String(bookId));
   if (!book) return;
@@ -246,13 +283,19 @@ window.openBookModal = function(bookId) {
   DOM.modalBookTitle.textContent = book.nome;
   DOM.modalBookAuthor.textContent = book.autor ? `Por ${book.autor}` : '';
   DOM.modalBookPrice.textContent = formatBRL(book.valor);
-  DOM.modalBookCondition.textContent = book.estado || 'Seminovo';
+  DOM.modalBookCondition.textContent = book.estado || 'Exemplar físico';
 
+  // Categorias como tags
   const cats = getBookCategories(book);
-  DOM.modalBookCategory.textContent = cats.join(' • ') || 'Livro';
-  DOM.modalBookDescription.textContent = book.descricao || 'Exemplar físico pronto para envio.';
+  if (cats.length > 0) {
+    DOM.modalBookCategory.innerHTML = cats.map(c => `<span class="book-category-tag">${c}</span>`).join('');
+  } else {
+    DOM.modalBookCategory.innerHTML = '<span class="book-category-tag">Geral</span>';
+  }
 
-  // Montagem da lista de fotos
+  DOM.modalBookDescription.textContent = book.descricao || 'Exemplar bem cuidado, pronto para leitura e pronta entrega.';
+
+  // Fotos e ângulos
   const angles = [];
   const imgs = book.imagens || {};
 
@@ -269,7 +312,7 @@ window.openBookModal = function(bookId) {
           label: `Detalhe ${idx + 1}`,
           url: det.url,
           isDetail: true,
-          caption: det.legenda || 'Detalhe do estado físico deste exemplar.'
+          caption: det.legenda || 'Observação do estado físico deste exemplar.'
         });
       }
     });
@@ -280,7 +323,9 @@ window.openBookModal = function(bookId) {
       <button 
         type="button" 
         class="gallery-thumb-btn ${i === 0 ? 'is-active' : ''}" 
+        data-index="${i}"
         onclick="selectGalleryAngle(${i})"
+        title="${item.label}"
       >
         <img src="${item.url}" alt="${item.label}">
         <span class="thumb-label">${item.label}</span>
@@ -290,7 +335,7 @@ window.openBookModal = function(bookId) {
     state.modalAngles = angles;
     selectGalleryAngle(0);
   } else {
-    DOM.galleryThumbs.innerHTML = '';
+    DOM.galleryThumbs.innerHTML = '<span style="font-size:0.8rem;color:#888;">Sem outras fotos disponíveis.</span>';
     DOM.galleryMainImg.src = 'images/placeholder-book.svg';
     DOM.galleryCurrentBadge.textContent = 'Sem foto';
     DOM.galleryCaptionBox.style.display = 'none';
@@ -311,8 +356,13 @@ window.selectGalleryAngle = function(index) {
   const thumbBtns = DOM.galleryThumbs.querySelectorAll('.gallery-thumb-btn');
   thumbBtns.forEach((btn, i) => btn.classList.toggle('is-active', i === index));
 
-  DOM.galleryMainImg.src = angle.url;
-  DOM.galleryCurrentBadge.textContent = angle.label;
+  DOM.galleryMainImg.style.opacity = '0.35';
+  setTimeout(() => {
+    DOM.galleryMainImg.src = angle.url;
+    DOM.galleryMainImg.alt = `${state.activeModalBook.nome} - ${angle.label}`;
+    DOM.galleryCurrentBadge.textContent = angle.label;
+    DOM.galleryMainImg.style.opacity = '1';
+  }, 100);
 
   if (angle.isDetail && angle.caption) {
     DOM.galleryCaptionBox.style.display = 'block';
@@ -330,7 +380,9 @@ function closeBookModal() {
   state.activeModalBook = null;
 }
 
-// Carrinho em localStorage
+// ==========================================================================
+// 6. Carrinho de Compras em localStorage
+// ==========================================================================
 function loadCartFromStorage() {
   try {
     const raw = localStorage.getItem(CONFIG.STORAGE_CART_KEY);
@@ -356,7 +408,7 @@ window.handleAddToCart = function(bookId) {
 
   const existing = state.cart.find(item => String(item.id) === String(bookId));
   if (existing) {
-    showToast(`"${book.nome}" já está na sua sacola.`);
+    showToast(`O livro "${book.nome}" já está na sua sacola! ☕`);
     openCartDrawer();
     return;
   }
@@ -370,7 +422,7 @@ window.handleAddToCart = function(bookId) {
   });
 
   saveCartToStorage();
-  showToast(`"${book.nome}" adicionado.`);
+  showToast(`"${book.nome}" adicionado à sacola! 📖`);
 };
 
 window.removeFromCart = function(bookId) {
@@ -381,6 +433,12 @@ window.removeFromCart = function(bookId) {
 function updateCartUI() {
   const count = state.cart.length;
   DOM.cartCountBadge.textContent = count;
+  DOM.cartTotalItemsCount.textContent = count;
+
+  DOM.cartCountBadge.style.transform = 'scale(1.25)';
+  setTimeout(() => {
+    DOM.cartCountBadge.style.transform = 'scale(1)';
+  }, 180);
 
   if (count === 0) {
     DOM.cartItemsList.style.display = 'none';
@@ -400,13 +458,18 @@ function updateCartUI() {
         <h4 class="cart-item__title">${item.nome}</h4>
         <div class="cart-item__price">${formatBRL(item.valor)}</div>
       </div>
-      <button class="cart-item__remove-btn" onclick="removeFromCart('${item.id}')" title="Remover" aria-label="Remover">
-        ✕
+      <button class="cart-item__remove-btn" onclick="removeFromCart('${item.id}')" title="Remover da sacola" aria-label="Remover">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 6h18"></path>
+          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+        </svg>
       </button>
     </div>
   `).join('');
 
   const total = state.cart.reduce((sum, item) => sum + (Number(item.valor) || 0), 0);
+  DOM.cartSubtotalValue.textContent = formatBRL(total);
   DOM.cartTotalValue.textContent = formatBRL(total);
 }
 
@@ -422,7 +485,9 @@ function closeCartDrawer() {
   document.body.style.overflow = '';
 }
 
-// Integração com WhatsApp (Mensagens Limpas)
+// ==========================================================================
+// 7. Integração e Checkout via WhatsApp (Formatação Limpa e Universal)
+// ==========================================================================
 function buySingleBookViaWhatsApp(book) {
   const bookName = book.nome || 'Livro';
   const price = formatBRL(book.valor);
@@ -430,7 +495,8 @@ function buySingleBookViaWhatsApp(book) {
   const message = [
     `*Lojinha do Dev - Pedido*`,
     ``,
-    `Ola! Gostaria de comprar o livro:`,
+    `Ola! Gostaria de comprar o seguinte livro:`,
+    ``,
     `- Livro: *${bookName}*`,
     `- Valor: ${price}`,
     `- Frete: GRATIS (Registro Modico Correios)`,
@@ -462,18 +528,18 @@ function checkoutCartViaWhatsApp() {
   });
 
   lines.push(``);
-  lines.push(`- *Total:* ${totalFormatted}`);
+  lines.push(`- *Total dos Livros:* ${totalFormatted}`);
   lines.push(`- *Frete:* GRATIS (Registro Modico Correios)`);
 
   if (customerName) {
-    lines.push(`- *Nome:* ${customerName}`);
+    lines.push(`- *Meu Nome:* ${customerName}`);
   }
   if (customerAddress) {
-    lines.push(`- *Endereco de Envio:* ${customerAddress}`);
+    lines.push(`- *Endereco / CEP de Envio:* ${customerAddress}`);
   }
 
   lines.push(``);
-  lines.push(`Os livros estao disponiveis? Como podemos combinar o pagamento e o envio?`);
+  lines.push(`Os livros ainda estao disponiveis? Como podemos combinar o pagamento e o envio gratuito?`);
 
   sendWhatsAppMessage(lines.join('\n'));
 }
@@ -488,14 +554,16 @@ function sendWhatsAppMessage(text) {
 function showToast(message) {
   const toast = document.createElement('div');
   toast.className = 'toast';
-  toast.textContent = message;
+  toast.innerHTML = `<span>✨</span> <span>${message}</span>`;
 
   DOM.toastContainer.appendChild(toast);
 
   setTimeout(() => {
     toast.style.opacity = '0';
-    setTimeout(() => toast.remove(), 250);
-  }, 2500);
+    toast.style.transform = 'translateY(10px)';
+    toast.style.transition = 'all 0.3s ease';
+    setTimeout(() => toast.remove(), 300);
+  }, 3200);
 }
 
 // Event Listeners
@@ -540,9 +608,10 @@ function setupEventListeners() {
   DOM.cartCheckoutBtn.addEventListener('click', checkoutCartViaWhatsApp);
 
   DOM.cartClearBtn.addEventListener('click', () => {
-    if (confirm('Esvaziar a sacola?')) {
+    if (confirm('Deseja realmente esvaziar todos os itens da sacola?')) {
       state.cart = [];
       saveCartToStorage();
+      showToast('Sacola esvaziada.');
     }
   });
 
