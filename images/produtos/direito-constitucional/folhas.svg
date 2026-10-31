@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+    <rect width="400" height="400" rx="12" fill="#FDFBF7"/>
+    <rect x="30" y="30" width="340" height="340" rx="8" fill="#FFFDF8" stroke="#E6DED5" stroke-width="2"/>
+    <text x="200" y="200" font-family="'Lora', serif" font-size="16" font-weight="bold" fill="#333" text-anchor="middle">Folhas e Miolo Preservados</text>
+  </svg>

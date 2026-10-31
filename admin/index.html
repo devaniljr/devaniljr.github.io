@@ -19,7 +19,7 @@
     <div class="admin-container admin-header__content">
       <div class="admin-brand">
         <span class="admin-badge-local">Painel Local</span>
-        <h1>☕ Lojinha do Dev <span>• Gestão de Livros</span></h1>
+        <h1>☕ Lojinha do Dev <span>• Gestão de Livros &amp; Categorias</span></h1>
       </div>
 
       <div class="admin-header__actions">
@@ -39,11 +39,11 @@
   <!-- Conteúdo Principal -->
   <main class="admin-container admin-main">
 
-    <!-- Notificação informativa sobre o deploy -->
+    <!-- Notificação informativa sobre o deploy e frete grátis -->
     <div class="admin-alert-banner">
       <div class="alert-icon">💡</div>
       <div class="alert-text">
-        <strong>Ambiente Local Seguro:</strong> Este painel atualiza diretamente o seu arquivo <code>produtos.json</code> no disco. Para publicar as alterações no GitHub Pages, basta comitar e subir o <code>produtos.json</code> (e as imagens novas). Este painel admin não é enviado no deploy!
+        <strong>Ambiente Local Seguro &amp; Frete Grátis:</strong> Este painel atualiza diretamente o seu arquivo <code>produtos.json</code> no disco. Todos os livros da loja possuem <strong>Frete Grátis</strong> (via Registro Módico Correios). Para publicar no GitHub Pages, basta comitar e subir o <code>produtos.json</code> e as novas fotos.
       </div>
     </div>
 
@@ -70,7 +70,7 @@
     <!-- Barra de Filtros e Busca do Admin -->
     <section class="admin-toolbar">
       <div class="search-wrap">
-        <input type="text" id="adminSearchInput" placeholder="Buscar livro por título ou autor..." class="admin-search-input">
+        <input type="text" id="adminSearchInput" placeholder="Buscar livro por título, autor ou categoria..." class="admin-search-input">
       </div>
 
       <div class="status-filters">
@@ -87,16 +87,16 @@
           <tr>
             <th width="70">Capa</th>
             <th>Título &amp; Autor</th>
-            <th width="120">Valor</th>
+            <th width="130">Categoria</th>
+            <th width="110">Valor</th>
             <th width="140">Estado Físico</th>
-            <th width="150">Status na Loja</th>
-            <th width="180">Ações Rápidas</th>
+            <th width="140">Status na Loja</th>
+            <th width="170">Ações Rápidas</th>
           </tr>
         </thead>
         <tbody id="booksTableBody">
-          <!-- Carregado via JS -->
           <tr>
-            <td colspan="6" class="table-loading">Carregando catálogo de livros...</td>
+            <td colspan="7" class="table-loading">Carregando catálogo de livros...</td>
           </tr>
         </tbody>
       </table>
@@ -130,10 +130,24 @@
             </div>
           </div>
 
-          <div class="form-row form-row--2">
+          <div class="form-row form-row--3">
+            <div class="form-group">
+              <label for="bookCategoria" class="required">Categoria do Livro:</label>
+              <select id="bookCategoria" class="form-control" required>
+                <option value="especiais">⭐ Especiais</option>
+                <option value="programação" selected>💻 Programação</option>
+                <option value="filosofia">🏛️ Filosofia</option>
+                <option value="ciência">🔬 Ciência</option>
+                <option value="inglês">🇬🇧 Inglês</option>
+                <option value="espanhol">🇪🇸 Espanhol</option>
+                <option value="concursos">⚖️ Concursos</option>
+              </select>
+            </div>
+
             <div class="form-group">
               <label for="bookValor" class="required">Valor em Reais (R$):</label>
               <input type="number" step="0.50" min="0" id="bookValor" class="form-control" required placeholder="Ex: 65.00">
+              <small style="color:#2D6A4F; font-weight:600; font-size:0.75rem;">(Frete Grátis Correios incluso)</small>
             </div>
 
             <div class="form-group">
@@ -165,10 +179,10 @@
           </div>
         </div>
 
-        <!-- Fotos Padrão Obrigatórias / Recomendadas -->
+        <!-- Fotos Padrão -->
         <div class="form-section">
           <h3 class="form-section-title">2. Fotos dos Ângulos Padrão</h3>
-          <p class="form-section-desc">Você pode fazer upload direto da foto (salva automaticamente em <code>images/produtos/</code>) ou digitar o caminho/URL.</p>
+          <p class="form-section-desc">Faça upload da foto (salva em <code>images/produtos/</code>) ou informe o caminho relativo/URL.</p>
 
           <div class="photos-grid">
             <!-- Frente -->

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lojinha do Dev ☕ Livros de Programação & Tecnologia</title>
-  <meta name="description" content="Lojinha aconchegante de livros de programação e tecnologia. Exemplares com fotos detalhadas do estado real e negociação direta pelo WhatsApp.">
+  <title>Lojinha do Dev ☕ Livros com Frete Grátis</title>
+  <meta name="description" content="Lojinha aconchegante de livros de programação, filosofia, ciência, idiomas e concursos. Frete grátis para todo o Brasil via Registro Módico Correios.">
   
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
@@ -19,31 +19,26 @@
 </head>
 <body>
 
-  <!-- Barra Superior de Destaque -->
+  <!-- Barra Superior de Destaque com Aviso de Frete Grátis -->
   <aside class="top-announcement">
     <div class="container top-announcement__content">
-      <span>☕ Livros físicos para desenvolvedores • Fotos reais de cada exemplar • Negociação direta</span>
+      <span class="free-shipping-tag">
+        🚚 <strong>FRETE GRÁTIS</strong> para todo o Brasil via Registro Módico dos Correios!
+      </span>
       <a href="https://wa.me/5569993306972" target="_blank" rel="noopener noreferrer" class="top-announcement__link">
-        Falar no WhatsApp: (69) 99330-6972
+        💬 WhatsApp: (69) 99330-6972
       </a>
     </div>
   </aside>
 
-  <!-- Cabeçalho Principal -->
+  <!-- Cabeçalho Compacto & Aconchegante -->
   <header class="header">
     <div class="container header__container">
       <a href="./" class="brand">
-        <div class="brand__icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
-            <path d="M6 6h10"></path>
-            <path d="M6 10h10"></path>
-            <path d="M18 14h-8"></path>
-          </svg>
-        </div>
+        <div class="brand__icon">☕</div>
         <div class="brand__text">
           <span class="brand__title">Lojinha do Dev</span>
-          <span class="brand__tagline">Livros com história para sua estante</span>
+          <span class="brand__tagline">Livros com história • Envio gratuito</span>
         </div>
       </a>
 
@@ -72,51 +67,44 @@
     </div>
   </header>
 
-  <!-- Banner Hero Aconchegante -->
-  <section class="hero-section">
-    <div class="container hero-container">
-      <div class="hero-text">
-        <div class="hero-chip">
-          <span>🌿 Cantinho do Leitor Dev</span>
-        </div>
-        <h1 class="hero-title">Livros clássicos &amp; modernos buscando uma nova estante.</h1>
-        <p class="hero-subtitle">
-          Cada exemplar aqui foi lido, cuidado e agora pode fazer parte da sua evolução como dev. Veja fotos transparentes de todos os ângulos: capa, verso, lombadas, folhas e detalhes do estado real.
-        </p>
-      </div>
-
-      <div class="hero-features">
-        <div class="feature-card">
-          <div class="feature-icon">🔍</div>
-          <div>
-            <strong>Transparência Total</strong>
-            <p>Fotos da frente, verso, lombadas e detalhes com legenda explicativa.</p>
-          </div>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">💬</div>
-          <div>
-            <strong>Compra Descomplicada</strong>
-            <p>Envie sua sacola direto para o meu WhatsApp com um clique.</p>
-          </div>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">📦</div>
-          <div>
-            <strong>Envio Seguro</strong>
-            <p>Livros bem embalados com plástico bolha e carinho.</p>
-          </div>
-        </div>
+  <!-- Seletor de Categorias Lindo e Aconchegante (Substitui o hero gigante) -->
+  <nav class="categories-bar" aria-label="Categorias de livros">
+    <div class="container categories-bar__container">
+      <div class="categories-scroll" id="categoriesNav">
+        <button class="category-pill is-active" data-category="todos">
+          <span class="pill-icon">📚</span> Todos
+        </button>
+        <button class="category-pill" data-category="especiais">
+          <span class="pill-icon">⭐</span> Especiais
+        </button>
+        <button class="category-pill" data-category="programação">
+          <span class="pill-icon">💻</span> Programação
+        </button>
+        <button class="category-pill" data-category="filosofia">
+          <span class="pill-icon">🏛️</span> Filosofia
+        </button>
+        <button class="category-pill" data-category="ciência">
+          <span class="pill-icon">🔬</span> Ciência
+        </button>
+        <button class="category-pill" data-category="inglês">
+          <span class="pill-icon">🇬🇧</span> Inglês
+        </button>
+        <button class="category-pill" data-category="espanhol">
+          <span class="pill-icon">🇪🇸</span> Espanhol
+        </button>
+        <button class="category-pill" data-category="concursos">
+          <span class="pill-icon">⚖️</span> Concursos
+        </button>
       </div>
     </div>
-  </section>
+  </nav>
 
-  <!-- Catálogo de Produtos -->
+  <!-- Conteúdo Principal - Começa Direto nos Livros -->
   <main class="main-content container">
-    <!-- Barra de Filtros e Contagem -->
+    <!-- Barra de Informações do Catálogo & Ordenação -->
     <div class="catalog-toolbar">
       <div class="catalog-info">
-        <h2 class="catalog-title">Livros Disponíveis</h2>
+        <h2 id="currentCategoryHeading" class="catalog-title">Todos os Livros</h2>
         <span id="catalogCount" class="catalog-count">Carregando acervo...</span>
       </div>
 
@@ -133,19 +121,18 @@
 
     <!-- Grid de Livros -->
     <div id="productGrid" class="product-grid" aria-live="polite">
-      <!-- Inserido dinamicamente via JS -->
       <div class="loading-state">
         <div class="spinner"></div>
         <p>Buscando os livros na estante...</p>
       </div>
     </div>
 
-    <!-- Estado Vazio (caso não encontre livros na busca) -->
+    <!-- Estado Vazio -->
     <div id="emptyCatalogState" class="empty-state" style="display: none;">
       <div class="empty-icon">☕📖</div>
       <h3>Nenhum livro encontrado</h3>
-      <p id="emptyStateMessage">Não encontramos nenhum exemplar com esse termo de busca.</p>
-      <button id="resetSearchBtn" class="btn btn-secondary">Limpar Busca</button>
+      <p id="emptyStateMessage">Não encontramos nenhum exemplar para os filtros selecionados.</p>
+      <button id="resetSearchBtn" class="btn btn-secondary">Ver Todos os Livros</button>
     </div>
   </main>
 
@@ -170,13 +157,13 @@
                 <line x1="12" y1="16" x2="12" y2="12"></line>
                 <line x1="12" y1="8" x2="12.01" y2="8"></line>
               </svg>
-              <strong>Observação do Estado:</strong>
+              <strong>Observação do Estado deste Detalhe:</strong>
             </div>
             <p id="galleryCaptionText" class="caption-text"></p>
           </div>
 
           <!-- Carrossel de Miniaturas / Seleção de Ângulos -->
-          <div class="gallery-angles-label">Escolha o ângulo para inspecionar:</div>
+          <div class="gallery-angles-label">Inspecionar ângulos do exemplar:</div>
           <div id="galleryThumbs" class="gallery-thumbs-bar">
             <!-- Miniaturas geradas dinamicamente: Frente, Verso, Lombadas, Folhas, Detalhes -->
           </div>
@@ -185,14 +172,23 @@
         <!-- Informações e Ações do Livro -->
         <div class="modal-details">
           <div class="modal-details__header">
-            <span id="modalBookCondition" class="book-condition-badge">Seminovo</span>
+            <div class="modal-badges-row">
+              <span id="modalBookCategory" class="book-category-badge">Programação</span>
+              <span id="modalBookCondition" class="book-condition-badge">Seminovo</span>
+              <span class="free-shipping-pill">🚚 Frete Grátis</span>
+            </div>
             <h2 id="modalBookTitle" class="modal-book-title">Título do Livro</h2>
             <p id="modalBookAuthor" class="modal-book-author">Autor do Livro</p>
           </div>
 
           <div class="modal-price-box">
-            <span class="price-prefix">Valor do exemplar:</span>
-            <span id="modalBookPrice" class="modal-book-price">R$ 0,00</span>
+            <div>
+              <span class="price-prefix">Valor do exemplar:</span>
+              <div id="modalBookPrice" class="modal-book-price">R$ 0,00</div>
+            </div>
+            <div class="price-shipping-highlight">
+              <span class="shipping-check">✓</span> Frete Grátis incluso
+            </div>
           </div>
 
           <div class="modal-description-box">
@@ -203,11 +199,11 @@
           <div class="modal-trust-info">
             <div class="trust-item">
               <span>✨</span>
-              <span>Foto real do livro que será enviado para você.</span>
+              <span><strong>Foto real</strong> deste exemplar que será enviado para você.</span>
             </div>
             <div class="trust-item">
-              <span>🚚</span>
-              <span>Frete a calcular de acordo com o seu CEP.</span>
+              <span>📦</span>
+              <span><strong>Frete Grátis</strong> para todo o Brasil via Registro Módico Correios.</span>
             </div>
           </div>
 
@@ -257,31 +253,34 @@
       <div id="cartEmptyState" class="cart-empty-state" style="display: none;">
         <div class="cart-empty-icon">☕📚</div>
         <h3>Sua sacola está vazia</h3>
-        <p>Explore as prateleiras da lojinha e adicione os livros que deseja levar.</p>
+        <p>Escolha seus livros na lojinha e adicione à sacola com frete grátis.</p>
         <button id="cartStartShoppingBtn" class="btn btn-secondary">Explorar Livros</button>
       </div>
 
       <!-- Rodapé da Sacola com Total e Finalização -->
       <div id="cartFooter" class="cart-drawer__footer">
-        <!-- Campos opcionais para enriquecer a mensagem -->
         <div class="cart-extra-inputs">
           <label for="customerNameInput" class="input-label">Seu Nome (opcional):</label>
           <input type="text" id="customerNameInput" class="form-input" placeholder="Ex: Lucas dev">
 
-          <label for="customerCepInput" class="input-label">Seu CEP (para cálculo de frete):</label>
-          <input type="text" id="customerCepInput" class="form-input" placeholder="Ex: 76801-000">
+          <label for="customerAddressInput" class="input-label">Endereço / CEP para envio gratuito (opcional):</label>
+          <input type="text" id="customerAddressInput" class="form-input" placeholder="Ex: Rua das Flores, 123 - Porto Velho / RO (76801-000)">
         </div>
 
         <div class="cart-summary">
           <div class="cart-summary-row">
-            <span>Subtotal (<span id="cartTotalItemsCount">0</span> itens):</span>
+            <span>Subtotal (<span id="cartTotalItemsCount">0</span> livros):</span>
             <strong id="cartSubtotalValue">R$ 0,00</strong>
           </div>
+          <div class="cart-summary-row">
+            <span>Frete (Registro Módico Correios):</span>
+            <strong class="free-shipping-text">GRÁTIS</strong>
+          </div>
           <div class="cart-summary-row cart-summary-row--total">
-            <span>Total dos Livros:</span>
+            <span>Total a pagar:</span>
             <strong id="cartTotalValue">R$ 0,00</strong>
           </div>
-          <p class="cart-shipping-note">🌿 O frete será calculado e combinado diretamente pelo WhatsApp.</p>
+          <p class="cart-shipping-note">🌿 Frete 100% gratuito para qualquer lugar do Brasil via Registro Módico!</p>
         </div>
 
         <button id="cartCheckoutBtn" class="btn btn-primary btn-block btn-checkout">
@@ -305,7 +304,7 @@
       <div class="footer-brand">
         <div class="footer-brand-title">☕ Lojinha do Dev</div>
         <p class="footer-brand-desc">
-          Livros lidos, amados e repassados para inspirar novas jornadas de desenvolvimento.
+          Livros físicos selecionados para enriquecer seus estudos. Frete grátis via Registro Módico Correios.
         </p>
       </div>
       <div class="footer-contact">

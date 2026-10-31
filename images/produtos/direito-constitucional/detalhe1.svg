@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 350" width="400" height="350">
+    <rect width="400" height="350" rx="12" fill="#FBF9F4"/>
+    <rect x="25" y="25" width="350" height="300" rx="8" fill="#FFFFFF" stroke="#E4DCD2" stroke-width="1.5"/>
+    <text x="200" y="180" font-family="'Lora', serif" font-size="16" font-weight="bold" fill="#2C221E" text-anchor="middle">Detalhe do Exemplar</text>
+  </svg>

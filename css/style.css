@@ -5,7 +5,7 @@
 :root {
   /* Paleta Quente & Aconchegante */
   --bg-primary: #FAF7F2;          /* Fundo papel suave / linho */
-  --bg-secondary: #F3ECE2;        /* Fundo secundário aconchegante */
+  --bg-secondary: #F4EDE3;        /* Fundo secundário aconchegante */
   --bg-card: #FFFFFF;             /* Cartões brancos quentes */
   --bg-accent-soft: #FBF4EB;      /* Destaque suave café com leite */
 
@@ -19,8 +19,8 @@
   --accent-hover: #A04A00;        /* Hover terracota */
   --accent-light: #FDF0E2;        /* Fundo do destaque */
   
-  --sage: #456B55;                /* Verde chá / sálvia aconchegante */
-  --sage-light: #EBF3EE;          /* Fundo verde sálvia */
+  --sage: #2D6A4F;                /* Verde botânico aconchegante */
+  --sage-light: #E8F5E9;          /* Fundo verde suave */
   
   --whatsapp: #1F8A4C;            /* Verde WhatsApp harmonizado */
   --whatsapp-hover: #176F3C;
@@ -41,7 +41,7 @@
   --radius-md: 14px;
   --radius-lg: 20px;
   --radius-pill: 9999px;
-  --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Reset Básico */
@@ -80,7 +80,7 @@ button, input, select {
 
 .container {
   width: 100%;
-  max-width: 1180px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -92,8 +92,8 @@ button, input, select {
   background-color: #382D26;
   color: #F8F4EE;
   font-size: 0.85rem;
-  padding: 8px 0;
-  letter-spacing: 0.02em;
+  padding: 7px 0;
+  letter-spacing: 0.01em;
 }
 
 .top-announcement__content {
@@ -102,6 +102,22 @@ button, input, select {
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.free-shipping-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #FEEBC8;
+}
+
+.free-shipping-tag strong {
+  color: #FFFFFF;
+  background-color: var(--sage);
+  padding: 1px 7px;
+  border-radius: var(--radius-pill);
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
 }
 
 .top-announcement__link {
@@ -119,16 +135,16 @@ button, input, select {
 }
 
 /* ==========================================================================
-   Cabeçalho (Header)
+   Cabeçalho Compacto (Header)
    ========================================================================== */
 .header {
-  background-color: rgba(250, 247, 242, 0.95);
+  background-color: rgba(250, 247, 242, 0.96);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
   z-index: 50;
-  padding: 14px 0;
+  padding: 12px 0;
 }
 
 .header__container {
@@ -142,25 +158,19 @@ button, input, select {
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   text-decoration: none;
 }
 
 .brand__icon {
-  width: 44px;
-  height: 44px;
-  background-color: var(--accent-light);
-  color: var(--accent);
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(194, 94, 0, 0.15);
+  font-size: 1.8rem;
+  line-height: 1;
+  transform-origin: bottom center;
   transition: var(--transition);
 }
 
 .brand:hover .brand__icon {
-  transform: rotate(-4deg) scale(1.04);
+  transform: rotate(-8deg) scale(1.1);
 }
 
 .brand__text {
@@ -170,14 +180,14 @@ button, input, select {
 
 .brand__title {
   font-family: var(--font-serif);
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   font-weight: 700;
   color: var(--text-main);
   line-height: 1.15;
 }
 
 .brand__tagline {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
 }
 
@@ -185,16 +195,16 @@ button, input, select {
 .header__search {
   position: relative;
   flex: 1;
-  max-width: 420px;
+  max-width: 440px;
 }
 
 .header__search input {
   width: 100%;
-  padding: 10px 38px 10px 42px;
+  padding: 9px 38px 9px 42px;
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-pill);
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   color: var(--text-main);
   outline: none;
   transition: var(--transition);
@@ -237,15 +247,15 @@ button, input, select {
 .cart-button {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  padding: 9px 18px;
+  padding: 8px 16px;
   border-radius: var(--radius-pill);
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   color: var(--text-main);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   transition: var(--transition);
   box-shadow: var(--shadow-sm);
 }
@@ -272,91 +282,78 @@ button, input, select {
 }
 
 /* ==========================================================================
-   Hero Section
+   Seletor de Categorias Lindo e Aconchegante
    ========================================================================== */
-.hero-section {
-  padding: 48px 0 36px;
-  background: linear-gradient(180deg, #F5EEE2 0%, var(--bg-primary) 100%);
-  border-bottom: 1px solid var(--border-subtle);
+.categories-bar {
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 12px 0;
+  position: sticky;
+  top: 61px;
+  z-index: 45;
+  box-shadow: 0 2px 6px rgba(74, 52, 38, 0.02);
 }
 
-.hero-container {
+.categories-bar__container {
+  overflow: hidden;
+}
+
+.categories-scroll {
   display: flex;
-  flex-direction: column;
-  gap: 32px;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  padding: 2px 0;
 }
 
-.hero-text {
-  max-width: 760px;
+.categories-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }
 
-.hero-chip {
-  display: inline-block;
-  background-color: var(--sage-light);
-  color: var(--sage);
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 6px 14px;
-  border-radius: var(--radius-pill);
-  margin-bottom: 14px;
-  border: 1px solid rgba(69, 107, 85, 0.15);
-}
-
-.hero-title {
-  font-family: var(--font-serif);
-  font-size: 2.3rem;
-  line-height: 1.25;
-  color: var(--text-main);
-  margin-bottom: 16px;
-  font-weight: 700;
-}
-
-.hero-subtitle {
-  font-size: 1.05rem;
-  color: var(--text-muted);
-  line-height: 1.7;
-}
-
-.hero-features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-}
-
-.feature-card {
+.category-pill {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 18px;
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  box-shadow: var(--shadow-sm);
-}
-
-.feature-icon {
-  font-size: 1.6rem;
-  line-height: 1;
-}
-
-.feature-card strong {
-  display: block;
-  font-size: 0.95rem;
   color: var(--text-main);
-  margin-bottom: 4px;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: var(--transition);
+  box-shadow: 0 1px 3px rgba(74, 52, 38, 0.04);
 }
 
-.feature-card p {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  line-height: 1.4;
+.category-pill .pill-icon {
+  font-size: 1rem;
+}
+
+.category-pill:hover {
+  background-color: #FFF9F2;
+  border-color: #D4BFA7;
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.category-pill.is-active {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(194, 94, 0, 0.28);
+  transform: translateY(-1px);
 }
 
 /* ==========================================================================
    Catálogo e Barra de Ferramentas
    ========================================================================== */
 .main-content {
-  padding: 40px 20px 80px;
+  padding: 30px 20px 80px;
   flex: 1;
 }
 
@@ -364,22 +361,22 @@ button, input, select {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
   gap: 16px;
   border-bottom: 1px solid var(--border-color);
-  padding-bottom: 18px;
+  padding-bottom: 14px;
 }
 
 .catalog-title {
   font-family: var(--font-serif);
-  font-size: 1.8rem;
+  font-size: 1.65rem;
   color: var(--text-main);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .catalog-count {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
 }
 
@@ -387,17 +384,17 @@ button, input, select {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
 }
 
 .form-select {
-  padding: 8px 14px;
+  padding: 7px 14px;
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
   color: var(--text-main);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   cursor: pointer;
   outline: none;
 }
@@ -411,8 +408,8 @@ button, input, select {
    ========================================================================== */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 28px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 26px;
 }
 
 /* Cartão do Livro */
@@ -458,19 +455,41 @@ button, input, select {
   transform: scale(1.03);
 }
 
-.book-card__badge {
+/* Badges sobre a capa */
+.book-card__badges-overlay {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+  gap: 6px;
+}
+
+.book-card__shipping-badge {
+  background-color: var(--sage);
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.02em;
+}
+
+.book-card__category-badge {
   background-color: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(4px);
-  color: var(--sage);
-  font-size: 0.75rem;
+  color: var(--text-main);
+  font-size: 0.72rem;
   font-weight: 700;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: var(--radius-pill);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(69, 107, 85, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  text-transform: capitalize;
 }
 
 .book-card__inspect-hint {
@@ -480,8 +499,8 @@ button, input, select {
   background-color: rgba(42, 33, 27, 0.85);
   backdrop-filter: blur(4px);
   color: #FFFFFF;
-  font-size: 0.75rem;
-  padding: 4px 10px;
+  font-size: 0.72rem;
+  padding: 3px 9px;
   border-radius: var(--radius-pill);
   display: flex;
   align-items: center;
@@ -498,19 +517,26 @@ button, input, select {
 
 /* Corpo do Cartão */
 .book-card__body {
-  padding: 20px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
+.book-card__condition-tag {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
 .book-card__title {
   font-family: var(--font-serif);
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-main);
   line-height: 1.35;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -523,7 +549,7 @@ button, input, select {
 }
 
 .book-card__author {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--text-muted);
   margin-bottom: 14px;
 }
@@ -531,14 +557,14 @@ button, input, select {
 .book-card__price-row {
   margin-top: auto;
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 16px;
+  flex-direction: column;
+  margin-bottom: 14px;
 }
 
-.book-card__price-label {
-  font-size: 0.8rem;
-  color: var(--text-light);
+.book-card__price-wrap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
 }
 
 .book-card__price {
@@ -546,6 +572,16 @@ button, input, select {
   font-weight: 700;
   color: var(--accent);
   letter-spacing: -0.01em;
+}
+
+.book-card__free-shipping-note {
+  font-size: 0.76rem;
+  color: var(--sage);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
 }
 
 /* Ações do Cartão */
@@ -563,10 +599,10 @@ button, input, select {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 16px;
+  padding: 9px 15px;
   border-radius: var(--radius-sm);
   font-weight: 600;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: var(--transition);
   border: 1px solid transparent;
@@ -598,8 +634,8 @@ button, input, select {
 }
 
 .btn-sm {
-  padding: 7px 12px;
-  font-size: 0.85rem;
+  padding: 7px 11px;
+  font-size: 0.82rem;
 }
 
 /* ==========================================================================
@@ -843,21 +879,48 @@ button, input, select {
   flex-direction: column;
 }
 
+.modal-badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.book-category-badge {
+  display: inline-block;
+  background-color: #F1ECE4;
+  color: var(--text-main);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  text-transform: capitalize;
+}
+
 .book-condition-badge {
   display: inline-block;
   background-color: var(--sage-light);
   color: var(--sage);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  padding: 4px 12px;
+  padding: 4px 10px;
   border-radius: var(--radius-pill);
-  margin-bottom: 12px;
-  border: 1px solid rgba(69, 107, 85, 0.2);
+  border: 1px solid rgba(45, 106, 79, 0.2);
+}
+
+.free-shipping-pill {
+  display: inline-block;
+  background-color: var(--sage);
+  color: #FFFFFF;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
 }
 
 .modal-book-title {
   font-family: var(--font-serif);
-  font-size: 1.7rem;
+  font-size: 1.65rem;
   line-height: 1.25;
   color: var(--text-main);
   margin-bottom: 6px;
@@ -866,7 +929,7 @@ button, input, select {
 .modal-book-author {
   font-size: 0.95rem;
   color: var(--text-muted);
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .modal-price-box {
@@ -874,14 +937,14 @@ button, input, select {
   border-radius: var(--radius-md);
   padding: 16px 20px;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
   border: 1px solid var(--border-color);
 }
 
 .price-prefix {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
 }
 
@@ -889,14 +952,36 @@ button, input, select {
   font-size: 1.8rem;
   font-weight: 800;
   color: var(--accent);
+  line-height: 1.1;
+}
+
+.price-shipping-highlight {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--sage);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.shipping-check {
+  background-color: var(--sage);
+  color: #FFFFFF;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
 }
 
 .modal-description-box {
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
 .modal-description-box h3 {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--text-main);
   margin-bottom: 6px;
@@ -905,7 +990,7 @@ button, input, select {
 }
 
 .modal-description-box p {
-  font-size: 0.95rem;
+  font-size: 0.93rem;
   color: var(--text-muted);
   line-height: 1.6;
 }
@@ -915,7 +1000,7 @@ button, input, select {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
   padding: 14px;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -975,7 +1060,7 @@ button, input, select {
 }
 
 .cart-drawer__header {
-  padding: 20px 24px;
+  padding: 18px 24px;
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
@@ -992,7 +1077,7 @@ button, input, select {
 
 .cart-drawer__title-wrap h2 {
   font-family: var(--font-serif);
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: 700;
 }
 
@@ -1031,8 +1116,8 @@ button, input, select {
 }
 
 .cart-item__cover {
-  width: 64px;
-  height: 84px;
+  width: 60px;
+  height: 80px;
   object-fit: contain;
   background-color: #ECE5DC;
   border-radius: var(--radius-sm);
@@ -1047,7 +1132,7 @@ button, input, select {
 
 .cart-item__title {
   font-family: var(--font-serif);
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: var(--text-main);
   line-height: 1.3;
@@ -1055,7 +1140,7 @@ button, input, select {
 }
 
 .cart-item__price {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--accent);
 }
@@ -1106,22 +1191,22 @@ button, input, select {
 
 /* Rodapé da Sacola */
 .cart-drawer__footer {
-  padding: 20px 24px;
+  padding: 18px 24px;
   border-top: 1px solid var(--border-color);
   background-color: var(--bg-primary);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .cart-extra-inputs {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .input-label {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   color: var(--text-muted);
 }
@@ -1132,7 +1217,7 @@ button, input, select {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
   background-color: var(--bg-card);
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   outline: none;
   transition: var(--transition);
 }
@@ -1144,18 +1229,23 @@ button, input, select {
 .cart-summary {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .cart-summary-row {
   display: flex;
   justify-content: space-between;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   color: var(--text-muted);
 }
 
+.free-shipping-text {
+  color: var(--sage);
+  font-weight: 700;
+}
+
 .cart-summary-row--total {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   color: var(--text-main);
   padding-top: 8px;
   border-top: 1px dashed var(--border-color);
@@ -1163,11 +1253,11 @@ button, input, select {
 
 .cart-summary-row--total strong {
   color: var(--accent);
-  font-size: 1.35rem;
+  font-size: 1.3rem;
 }
 
 .cart-shipping-note {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--sage);
   background-color: var(--sage-light);
   padding: 6px 10px;
@@ -1177,8 +1267,8 @@ button, input, select {
 .btn-checkout {
   background-color: var(--whatsapp);
   color: #FFFFFF;
-  padding: 13px;
-  font-size: 1rem;
+  padding: 12px;
+  font-size: 0.96rem;
 }
 
 .btn-checkout:hover {
@@ -1189,7 +1279,7 @@ button, input, select {
   background: none;
   border: none;
   color: var(--text-light);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   text-decoration: underline;
   cursor: pointer;
   align-self: center;
@@ -1246,7 +1336,7 @@ button, input, select {
 .footer {
   background-color: #2A211B;
   color: #E2D7C9;
-  padding: 48px 0 36px;
+  padding: 40px 0 30px;
   margin-top: auto;
   border-top: 1px solid #3D322A;
 }
@@ -1255,33 +1345,33 @@ button, input, select {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 32px;
+  gap: 28px;
 }
 
 .footer-brand-title {
   font-family: var(--font-serif);
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   color: #FFFFFF;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .footer-brand-desc {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: #B0A296;
   max-width: 380px;
   line-height: 1.6;
 }
 
 .footer-contact h4 {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   color: #FFFFFF;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .footer-contact p {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: #B0A296;
   margin-bottom: 4px;
 }
@@ -1296,8 +1386,8 @@ button, input, select {
 }
 
 .footer-note {
-  margin-top: 12px;
-  font-size: 0.8rem;
+  margin-top: 10px;
+  font-size: 0.78rem;
   color: #8C7F74;
 }
 
@@ -1315,14 +1405,14 @@ button, input, select {
     width: 100%;
   }
 
-  .hero-title {
-    font-size: 1.8rem;
+  .categories-bar {
+    top: 105px;
   }
 
   .modal-layout {
     grid-template-columns: 1fr;
-    padding: 24px 20px;
-    gap: 20px;
+    padding: 22px 18px;
+    gap: 18px;
   }
 
   .modal-card {

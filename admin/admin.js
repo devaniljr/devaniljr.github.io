@@ -1,6 +1,6 @@
 /**
  * Lojinha do Dev - Painel Administrativo Local
- * Gerenciamento do arquivo produtos.json e upload de fotos.
+ * Gerenciamento do arquivo produtos.json, categorias e upload de fotos.
  */
 
 const API = {
@@ -43,6 +43,7 @@ const DOM = {
   bookId: document.getElementById('bookId'),
   bookNome: document.getElementById('bookNome'),
   bookAutor: document.getElementById('bookAutor'),
+  bookCategoria: document.getElementById('bookCategoria'),
   bookValor: document.getElementById('bookValor'),
   bookEstado: document.getElementById('bookEstado'),
   bookDescricao: document.getElementById('bookDescricao'),
@@ -96,8 +97,8 @@ async function loadProducts() {
     console.error('Erro ao carregar produtos:', err);
     DOM.booksTableBody.innerHTML = `
       <tr>
-        <td colspan="6" style="text-align:center; padding: 30px; color: #DC2626;">
-          ⚠️ Erro ao conectar ao servidor local. Verifique se o comando "npm run dev" está rodando no terminal.
+        <td colspan="7" style="text-align:center; padding: 30px; color: #DC2626;">
+          ⚠️ Erro ao conectar ao servidor local. Verifique se o servidor está rodando.
         </td>
       </tr>
     `;
@@ -140,7 +141,8 @@ function renderTable() {
     if (query) {
       const title = (book.nome || '').toLowerCase();
       const author = (book.autor || '').toLowerCase();
-      if (!title.includes(query) && !author.includes(query)) return false;
+      const cat = (book.categoria || '').toLowerCase();
+      if (!title.includes(query) && !author.includes(query) && !cat.includes(query)) return false;
     }
 
     return true;
@@ -149,7 +151,7 @@ function renderTable() {
   if (filtered.length === 0) {
     DOM.booksTableBody.innerHTML = `
       <tr>
-        <td colspan="6" style="text-align:center; padding: 40px; color: #64748B;">
+        <td colspan="7" style="text-align:center; padding: 40px; color: #64748B;">
           Nenhum livro encontrado com esses filtros.
         </td>
       </tr>
@@ -162,6 +164,7 @@ function renderTable() {
     const coverUrl = (book.imagens && book.imagens.frente) ? book.imagens.frente : '/images/placeholder-book.svg';
     const author = book.autor || 'Autor não informado';
     const condition = book.estado || 'Seminovo';
+    const category = book.categoria || 'Geral';
 
     return `
       <tr data-id="${book.id}">
@@ -171,6 +174,9 @@ function renderTable() {
         <td>
           <span class="book-title-cell">${book.nome}</span>
           <span class="book-author-cell">${author}</span>
+        </td>
+        <td>
+          <span class="table-category-badge">${category}</span>
         </td>
         <td>
           <span class="book-price-cell">${formatBRL(book.valor)}</span>
@@ -273,6 +279,7 @@ function openCreateModal() {
   DOM.modalFormTitle.textContent = 'Cadastrar Novo Livro';
   DOM.bookForm.reset();
   DOM.bookId.value = '';
+  DOM.bookCategoria.value = 'programação';
   DOM.bookVendido.checked = false;
   state.dynamicDetails = [];
 
@@ -296,6 +303,7 @@ window.openEditModal = function(bookId) {
   DOM.bookId.value = book.id;
   DOM.bookNome.value = book.nome || '';
   DOM.bookAutor.value = book.autor || '';
+  DOM.bookCategoria.value = (book.categoria || 'programação').toLowerCase();
   DOM.bookValor.value = book.valor || '';
   DOM.bookEstado.value = book.estado || 'Seminovo - Excelente';
   DOM.bookDescricao.value = book.descricao || '';
@@ -464,7 +472,6 @@ window.handleDetailFileUpload = async function(event, index) {
   }
 };
 
-// Atualiza preview ao digitar URL manualmente nos campos padrão
 ['frente', 'verso', 'lombada1', 'lombada2', 'folhas'].forEach(key => {
   const input = DOM[`img_${key}`];
   const prev = DOM[`prev_${key}`];
@@ -484,12 +491,12 @@ DOM.bookForm.addEventListener('submit', async (e) => {
   const id = DOM.bookId.value || `livro-${Date.now()}`;
   const nome = DOM.bookNome.value.trim();
   const autor = DOM.bookAutor.value.trim();
+  const categoria = DOM.bookCategoria.value.trim().toLowerCase();
   const valor = parseFloat(DOM.bookValor.value) || 0;
   const estado = DOM.bookEstado.value;
   const descricao = DOM.bookDescricao.value.trim();
   const vendido = DOM.bookVendido.checked;
 
-  // Imagens
   const imagens = {
     frente: DOM.img_frente.value.trim(),
     verso: DOM.img_verso.value.trim(),
@@ -508,6 +515,7 @@ DOM.bookForm.addEventListener('submit', async (e) => {
     id,
     nome,
     autor,
+    categoria,
     valor,
     estado,
     descricao,
@@ -516,13 +524,11 @@ DOM.bookForm.addEventListener('submit', async (e) => {
   };
 
   if (state.editingBookId) {
-    // Atualiza livro existente
     const idx = state.products.findIndex(b => String(b.id) === String(state.editingBookId));
     if (idx !== -1) {
       state.products[idx] = bookData;
     }
   } else {
-    // Insere novo livro no início do catálogo
     state.products.unshift(bookData);
   }
 
@@ -581,7 +587,6 @@ function setupEventListeners() {
   });
 }
 
-// Toast
 function showToast(msg) {
   DOM.adminToast.textContent = msg;
   DOM.adminToast.classList.add('show');
