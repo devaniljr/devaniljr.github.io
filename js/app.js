@@ -1,39 +1,34 @@
 /**
  * Lojinha do Dev - Frontend Application
- * Consumo do catálogo, categorias múltiplas, galeria de fotos com legendas,
- * Frete Grátis via Registro Módico e checkout WhatsApp universal.
+ * Design limpo, foco nos livros, fotos detalhadas e checkout WhatsApp.
  */
 
-// Configurações Globais
 const CONFIG = {
   WHATSAPP_NUMBER: '5569993306972',
   STORAGE_CART_KEY: 'lojinha_dev_cart_v1',
   DATA_URL: './produtos.json'
 };
 
-// Estado da Aplicação
 const state = {
-  allProducts: [],        // Apenas produtos disponíveis (vendido === false)
-  filteredProducts: [],   // Produtos filtrados pela categoria/busca/ordenação
-  currentCategory: 'todos',// Categoria ativa
-  cart: [],               // Itens na sacola
-  activeModalBook: null,  // Livro atualmente aberto no modal
-  modalAngles: []         // Ângulos do livro no modal
+  allProducts: [],
+  filteredProducts: [],
+  currentCategory: 'todos',
+  cart: [],
+  activeModalBook: null,
+  modalAngles: []
 };
 
-// Nomes amigáveis para as categorias no cabeçalho
 const CATEGORY_NAMES = {
   'todos': 'Todos os Livros',
   'especiais': 'Edições Especiais',
-  'programação': 'Livros de Programação',
-  'filosofia': 'Livros de Filosofia',
-  'ciência': 'Livros de Ciência',
-  'inglês': 'Livros em Inglês & Gramática',
-  'espanhol': 'Livros em Espanhol & Gramática',
-  'concursos': 'Livros para Concursos Públicos'
+  'programação': 'Programação',
+  'filosofia': 'Filosofia',
+  'ciência': 'Ciência',
+  'inglês': 'Inglês',
+  'espanhol': 'Espanhol',
+  'concursos': 'Concursos'
 };
 
-// Elementos do DOM
 const DOM = {
   productGrid: document.getElementById('productGrid'),
   catalogCount: document.getElementById('catalogCount'),
@@ -45,7 +40,7 @@ const DOM = {
   sortSelect: document.getElementById('sortSelect'),
   categoriesNav: document.getElementById('categoriesNav'),
 
-  // Modal de Detalhes
+  // Modal
   bookModal: document.getElementById('bookModal'),
   modalCloseBtn: document.getElementById('modalCloseBtn'),
   galleryMainImg: document.getElementById('galleryMainImg'),
@@ -62,7 +57,7 @@ const DOM = {
   modalBuyNowBtn: document.getElementById('modalBuyNowBtn'),
   modalAddToCartBtn: document.getElementById('modalAddToCartBtn'),
 
-  // Sacola / Gaveta
+  // Sacola
   cartToggleBtn: document.getElementById('cartToggleBtn'),
   cartDrawerBackdrop: document.getElementById('cartDrawerBackdrop'),
   cartCloseBtn: document.getElementById('cartCloseBtn'),
@@ -70,8 +65,6 @@ const DOM = {
   cartEmptyState: document.getElementById('cartEmptyState'),
   cartFooter: document.getElementById('cartFooter'),
   cartCountBadge: document.getElementById('cartCountBadge'),
-  cartTotalItemsCount: document.getElementById('cartTotalItemsCount'),
-  cartSubtotalValue: document.getElementById('cartSubtotalValue'),
   cartTotalValue: document.getElementById('cartTotalValue'),
   customerNameInput: document.getElementById('customerNameInput'),
   customerAddressInput: document.getElementById('customerAddressInput'),
@@ -79,11 +72,9 @@ const DOM = {
   cartClearBtn: document.getElementById('cartClearBtn'),
   cartStartShoppingBtn: document.getElementById('cartStartShoppingBtn'),
 
-  // Toast
   toastContainer: document.getElementById('toastContainer')
 };
 
-// Formatação de Moeda BRL
 function formatBRL(value) {
   const number = Number(value) || 0;
   return number.toLocaleString('pt-BR', {
@@ -92,7 +83,6 @@ function formatBRL(value) {
   });
 }
 
-// Normaliza texto para comparações
 function normalizeText(text) {
   return (text || '')
     .toString()
@@ -102,7 +92,6 @@ function normalizeText(text) {
     .trim();
 }
 
-// Retorna sempre um array de categorias para qualquer livro
 function getBookCategories(book) {
   if (Array.isArray(book.categorias)) return book.categorias;
   if (Array.isArray(book.categoria)) return book.categoria;
@@ -115,68 +104,58 @@ function getBookCategories(book) {
   return [];
 }
 
-// ==========================================================================
-// 1. Inicialização
-// ==========================================================================
+// Inicialização
 document.addEventListener('DOMContentLoaded', () => {
   loadCartFromStorage();
   fetchProducts();
   setupEventListeners();
 });
 
-// ==========================================================================
-// 2. Carregamento dos Produtos (produtos.json)
-// ==========================================================================
+// Carregamento dos Produtos
 async function fetchProducts() {
   try {
     const res = await fetch(`${CONFIG.DATA_URL}?_=${Date.now()}`);
     if (!res.ok) throw new Error(`Erro HTTP: ${res.status}`);
     const rawData = await res.json();
 
-    // REGRA FUNDAMENTAL: Se vendido for true, NÃO mostra em nenhum lugar da loja pública
+    // Filtra vendidos: vendido === true NUNCA aparece na loja
     state.allProducts = (Array.isArray(rawData) ? rawData : [])
       .filter(item => item && item.vendido !== true && item.vendido !== 'true');
 
     applyFiltersAndSort();
   } catch (error) {
-    console.error('Falha ao carregar catálogo de produtos:', error);
+    console.error('Erro ao carregar produtos:', error);
     DOM.productGrid.innerHTML = `
       <div class="empty-state">
-        <div class="empty-icon">⚠️</div>
-        <h3>Ops! Não conseguimos carregar os livros.</h3>
-        <p>Verifique sua conexão ou tente recarregar a página.</p>
-        <button onclick="location.reload()" class="btn btn-secondary">Tentar Novamente</button>
+        <p>Não foi possível carregar os livros no momento.</p>
+        <button onclick="location.reload()" class="btn btn-secondary btn-sm">Tentar Novamente</button>
       </div>
     `;
-    DOM.catalogCount.textContent = 'Indisponível no momento';
   }
 }
 
-// ==========================================================================
-// 3. Filtros (Múltiplas Categorias, Busca e Ordenação)
-// ==========================================================================
+// Filtros e Ordenação
 function applyFiltersAndSort() {
   const query = (DOM.searchInput.value || '').trim().toLowerCase();
   const sort = DOM.sortSelect.value;
   const activeCat = state.currentCategory;
 
   let list = state.allProducts.filter(book => {
-    // 1. Filtro por Múltiplas Categorias
+    // Categoria
     if (activeCat !== 'todos') {
       const bookCats = getBookCategories(book).map(c => normalizeText(c));
-      const targetCat = normalizeText(activeCat);
-      if (!bookCats.includes(targetCat)) {
+      if (!bookCats.includes(normalizeText(activeCat))) {
         return false;
       }
     }
 
-    // 2. Filtro por Busca de Texto
+    // Busca textual
     if (query) {
       const title = (book.nome || '').toLowerCase();
       const author = (book.autor || '').toLowerCase();
       const desc = (book.descricao || '').toLowerCase();
-      const catsString = getBookCategories(book).join(' ').toLowerCase();
-      if (!title.includes(query) && !author.includes(query) && !desc.includes(query) && !catsString.includes(query)) {
+      const cats = getBookCategories(book).join(' ').toLowerCase();
+      if (!title.includes(query) && !author.includes(query) && !desc.includes(query) && !cats.includes(query)) {
         return false;
       }
     }
@@ -184,7 +163,7 @@ function applyFiltersAndSort() {
     return true;
   });
 
-  // 3. Ordenação
+  // Ordenação
   if (sort === 'price-asc') {
     list.sort((a, b) => Number(a.valor || 0) - Number(b.valor || 0));
   } else if (sort === 'price-desc') {
@@ -197,17 +176,11 @@ function applyFiltersAndSort() {
   renderCatalog();
 }
 
-// ==========================================================================
-// 4. Renderização do Catálogo (Grid de Livros)
-// ==========================================================================
+// Renderização do Catálogo (Cards Limpos)
 function renderCatalog() {
   const count = state.filteredProducts.length;
-  DOM.catalogCount.textContent = `${count} ${count === 1 ? 'livro disponível' : 'livros disponíveis'}`;
-
-  // Atualiza título da categoria ativa
-  DOM.currentCategoryHeading.textContent = CATEGORY_NAMES[state.currentCategory] || 'Livros Disponíveis';
-
-  // Controle do botão de limpar busca
+  DOM.catalogCount.textContent = `${count} ${count === 1 ? 'livro' : 'livros'}`;
+  DOM.currentCategoryHeading.textContent = CATEGORY_NAMES[state.currentCategory] || 'Livros';
   DOM.clearSearchBtn.style.display = DOM.searchInput.value ? 'block' : 'none';
 
   if (count === 0) {
@@ -221,52 +194,41 @@ function renderCatalog() {
 
   DOM.productGrid.innerHTML = state.filteredProducts.map(book => {
     const coverUrl = (book.imagens && book.imagens.frente) ? book.imagens.frente : 'images/placeholder-book.svg';
+    const author = book.autor || '';
     const condition = book.estado || 'Seminovo';
-    const author = book.autor || 'Autor não informado';
-    const cats = getBookCategories(book);
-    const categoryLabel = cats.length > 0 ? cats[0] : 'Geral';
 
     return `
       <article class="book-card" data-id="${book.id}">
         <div class="book-card__cover-wrap" onclick="openBookModal('${book.id}')">
-          <div class="book-card__badges-overlay">
-            <span class="book-card__shipping-badge">🚚 Frete Grátis</span>
-            <span class="book-card__category-badge">${categoryLabel}</span>
-          </div>
-
           <img 
             src="${coverUrl}" 
-            alt="Capa de ${book.nome}" 
+            alt="${book.nome}" 
             class="book-card__cover" 
             loading="lazy"
             onerror="this.src='images/placeholder-book.svg'"
           >
-          <span class="book-card__inspect-hint">🔍 Ver fotos e ângulos</span>
         </div>
 
         <div class="book-card__body">
-          <span class="book-card__condition-tag">${condition}</span>
+          <div class="book-card__meta">
+            <span class="book-card__condition">${condition}</span>
+          </div>
+
           <h3 class="book-card__title" onclick="openBookModal('${book.id}')" title="${book.nome}">
             ${book.nome}
           </h3>
-          <p class="book-card__author">${author}</p>
+          ${author ? `<p class="book-card__author">${author}</p>` : ''}
 
-          <div class="book-card__price-row">
-            <div class="book-card__price-wrap">
-              <span class="book-card__price">${formatBRL(book.valor)}</span>
+          <div class="book-card__footer">
+            <span class="book-card__price">${formatBRL(book.valor)}</span>
+            <div class="book-card__actions">
+              <button class="btn btn-secondary btn-sm" onclick="openBookModal('${book.id}')">
+                Fotos
+              </button>
+              <button class="btn btn-primary btn-sm" onclick="handleAddToCart('${book.id}')">
+                + Sacola
+              </button>
             </div>
-            <span class="book-card__free-shipping-note">
-              ✓ Frete Grátis (Correios)
-            </span>
-          </div>
-
-          <div class="book-card__actions">
-            <button class="btn btn-secondary btn-sm" onclick="openBookModal('${book.id}')" title="Inspecionar todos os ângulos e detalhes">
-              🔍 Detalhes
-            </button>
-            <button class="btn btn-primary btn-sm" onclick="handleAddToCart('${book.id}')" title="Adicionar este livro à sacola">
-              + Sacola
-            </button>
           </div>
         </div>
       </article>
@@ -274,75 +236,51 @@ function renderCatalog() {
   }).join('');
 }
 
-// ==========================================================================
-// 5. Modal de Detalhes e Galeria de Fotos
-// ==========================================================================
+// Modal de Fotos e Detalhes
 window.openBookModal = function(bookId) {
   const book = state.allProducts.find(b => String(b.id) === String(bookId));
   if (!book) return;
 
   state.activeModalBook = book;
 
-  // Preenche dados textuais
   DOM.modalBookTitle.textContent = book.nome;
   DOM.modalBookAuthor.textContent = book.autor ? `Por ${book.autor}` : '';
   DOM.modalBookPrice.textContent = formatBRL(book.valor);
-  DOM.modalBookCondition.textContent = book.estado || 'Exemplar físico';
+  DOM.modalBookCondition.textContent = book.estado || 'Seminovo';
 
-  // Exibe todas as categorias do livro no modal
   const cats = getBookCategories(book);
-  if (cats.length > 0) {
-    DOM.modalBookCategory.innerHTML = cats.map(c => `<span class="category-chip-tag">${c}</span>`).join(' ');
-  } else {
-    DOM.modalBookCategory.textContent = 'Livro';
-  }
+  DOM.modalBookCategory.textContent = cats.join(' • ') || 'Livro';
+  DOM.modalBookDescription.textContent = book.descricao || 'Exemplar físico pronto para envio.';
 
-  DOM.modalBookDescription.textContent = book.descricao || 'Exemplar em bom estado físico para pronta entrega.';
-
-  // Monta lista de fotos e ângulos disponíveis
+  // Montagem da lista de fotos
   const angles = [];
   const imgs = book.imagens || {};
 
-  if (imgs.frente) {
-    angles.push({ key: 'frente', label: 'Capa Frente', url: imgs.frente, isDetail: false });
-  }
-  if (imgs.verso) {
-    angles.push({ key: 'verso', label: 'Verso / Traseira', url: imgs.verso, isDetail: false });
-  }
-  if (imgs.lombada1) {
-    angles.push({ key: 'lombada1', label: 'Lombada (1)', url: imgs.lombada1, isDetail: false });
-  }
-  if (imgs.lombada2) {
-    angles.push({ key: 'lombada2', label: 'Lombada (2)', url: imgs.lombada2, isDetail: false });
-  }
-  if (imgs.folhas) {
-    angles.push({ key: 'folhas', label: 'Folhas / Corte', url: imgs.folhas, isDetail: false });
-  }
+  if (imgs.frente) angles.push({ label: 'Frente', url: imgs.frente, isDetail: false });
+  if (imgs.verso) angles.push({ label: 'Verso', url: imgs.verso, isDetail: false });
+  if (imgs.lombada1) angles.push({ label: 'Lombada 1', url: imgs.lombada1, isDetail: false });
+  if (imgs.lombada2) angles.push({ label: 'Lombada 2', url: imgs.lombada2, isDetail: false });
+  if (imgs.folhas) angles.push({ label: 'Folhas', url: imgs.folhas, isDetail: false });
 
-  // Detalhes (array com url e legenda)
   if (Array.isArray(imgs.detalhes)) {
     imgs.detalhes.forEach((det, idx) => {
       if (det && det.url) {
         angles.push({
-          key: `detalhe-${idx}`,
           label: `Detalhe ${idx + 1}`,
           url: det.url,
           isDetail: true,
-          caption: det.legenda || 'Observação do estado físico deste exemplar.'
+          caption: det.legenda || 'Detalhe do estado físico deste exemplar.'
         });
       }
     });
   }
 
-  // Renderiza miniaturas
   if (angles.length > 0) {
     DOM.galleryThumbs.innerHTML = angles.map((item, i) => `
       <button 
         type="button" 
         class="gallery-thumb-btn ${i === 0 ? 'is-active' : ''}" 
-        data-index="${i}"
         onclick="selectGalleryAngle(${i})"
-        title="${item.label}"
       >
         <img src="${item.url}" alt="${item.label}">
         <span class="thumb-label">${item.label}</span>
@@ -352,19 +290,15 @@ window.openBookModal = function(bookId) {
     state.modalAngles = angles;
     selectGalleryAngle(0);
   } else {
-    DOM.galleryThumbs.innerHTML = '<span style="font-size:0.8rem;color:#888;">Sem outras fotos disponíveis.</span>';
+    DOM.galleryThumbs.innerHTML = '';
     DOM.galleryMainImg.src = 'images/placeholder-book.svg';
-    DOM.galleryCurrentBadge.textContent = 'Sem Imagem';
+    DOM.galleryCurrentBadge.textContent = 'Sem foto';
     DOM.galleryCaptionBox.style.display = 'none';
   }
 
-  // Ações do modal
   DOM.modalBuyNowBtn.onclick = () => buySingleBookViaWhatsApp(book);
-  DOM.modalAddToCartBtn.onclick = () => {
-    handleAddToCart(book.id);
-  };
+  DOM.modalAddToCartBtn.onclick = () => handleAddToCart(book.id);
 
-  // Abre modal
   DOM.bookModal.classList.add('is-open');
   DOM.bookModal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
@@ -375,17 +309,10 @@ window.selectGalleryAngle = function(index) {
   if (!angle) return;
 
   const thumbBtns = DOM.galleryThumbs.querySelectorAll('.gallery-thumb-btn');
-  thumbBtns.forEach((btn, i) => {
-    btn.classList.toggle('is-active', i === index);
-  });
+  thumbBtns.forEach((btn, i) => btn.classList.toggle('is-active', i === index));
 
-  DOM.galleryMainImg.style.opacity = '0.35';
-  setTimeout(() => {
-    DOM.galleryMainImg.src = angle.url;
-    DOM.galleryMainImg.alt = `${state.activeModalBook.nome} - ${angle.label}`;
-    DOM.galleryCurrentBadge.textContent = angle.label;
-    DOM.galleryMainImg.style.opacity = '1';
-  }, 100);
+  DOM.galleryMainImg.src = angle.url;
+  DOM.galleryCurrentBadge.textContent = angle.label;
 
   if (angle.isDetail && angle.caption) {
     DOM.galleryCaptionBox.style.display = 'block';
@@ -403,9 +330,7 @@ function closeBookModal() {
   state.activeModalBook = null;
 }
 
-// ==========================================================================
-// 6. Carrinho de Compras em localStorage
-// ==========================================================================
+// Carrinho em localStorage
 function loadCartFromStorage() {
   try {
     const raw = localStorage.getItem(CONFIG.STORAGE_CART_KEY);
@@ -431,22 +356,21 @@ window.handleAddToCart = function(bookId) {
 
   const existing = state.cart.find(item => String(item.id) === String(bookId));
   if (existing) {
-    showToast(`"${book.nome}" já está na sua sacola!`);
+    showToast(`"${book.nome}" já está na sua sacola.`);
     openCartDrawer();
     return;
   }
 
-  const cartItem = {
+  state.cart.push({
     id: book.id,
     nome: book.nome,
     autor: book.autor || '',
     valor: Number(book.valor) || 0,
     imagem: (book.imagens && book.imagens.frente) ? book.imagens.frente : ''
-  };
+  });
 
-  state.cart.push(cartItem);
   saveCartToStorage();
-  showToast(`"${book.nome}" adicionado à sacola com Frete Grátis!`);
+  showToast(`"${book.nome}" adicionado.`);
 };
 
 window.removeFromCart = function(bookId) {
@@ -457,12 +381,6 @@ window.removeFromCart = function(bookId) {
 function updateCartUI() {
   const count = state.cart.length;
   DOM.cartCountBadge.textContent = count;
-  DOM.cartTotalItemsCount.textContent = count;
-
-  DOM.cartCountBadge.style.transform = 'scale(1.25)';
-  setTimeout(() => {
-    DOM.cartCountBadge.style.transform = 'scale(1)';
-  }, 180);
 
   if (count === 0) {
     DOM.cartItemsList.style.display = 'none';
@@ -480,20 +398,15 @@ function updateCartUI() {
       <img src="${item.imagem}" alt="${item.nome}" class="cart-item__cover" onerror="this.src='images/placeholder-book.svg'">
       <div class="cart-item__info">
         <h4 class="cart-item__title">${item.nome}</h4>
-        <div class="cart-item__price">${formatBRL(item.valor)} <span style="font-size:0.75rem; color:#2D6A4F; font-weight:600;">(Frete Grátis)</span></div>
+        <div class="cart-item__price">${formatBRL(item.valor)}</div>
       </div>
-      <button class="cart-item__remove-btn" onclick="removeFromCart('${item.id}')" title="Remover da sacola" aria-label="Remover">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M3 6h18"></path>
-          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-        </svg>
+      <button class="cart-item__remove-btn" onclick="removeFromCart('${item.id}')" title="Remover" aria-label="Remover">
+        ✕
       </button>
     </div>
   `).join('');
 
   const total = state.cart.reduce((sum, item) => sum + (Number(item.valor) || 0), 0);
-  DOM.cartSubtotalValue.textContent = formatBRL(total);
   DOM.cartTotalValue.textContent = formatBRL(total);
 }
 
@@ -509,21 +422,15 @@ function closeCartDrawer() {
   document.body.style.overflow = '';
 }
 
-// ==========================================================================
-// 7. Integração e Checkout via WhatsApp (Formatado com caracteres universais)
-// ==========================================================================
-
-// Compra direta de 1 único livro
+// Integração com WhatsApp (Mensagens Limpas)
 function buySingleBookViaWhatsApp(book) {
   const bookName = book.nome || 'Livro';
   const price = formatBRL(book.valor);
 
-  // Usamos formatação padrão com travessão e marcadores que nunca falham no WhatsApp
   const message = [
     `*Lojinha do Dev - Pedido*`,
     ``,
-    `Ola! Gostaria de comprar o seguinte livro:`,
-    ``,
+    `Ola! Gostaria de comprar o livro:`,
     `- Livro: *${bookName}*`,
     `- Valor: ${price}`,
     `- Frete: GRATIS (Registro Modico Correios)`,
@@ -534,7 +441,6 @@ function buySingleBookViaWhatsApp(book) {
   sendWhatsAppMessage(message);
 }
 
-// Checkout da Sacola
 function checkoutCartViaWhatsApp() {
   if (state.cart.length === 0) return;
 
@@ -556,18 +462,18 @@ function checkoutCartViaWhatsApp() {
   });
 
   lines.push(``);
-  lines.push(`- *Total dos Livros:* ${totalFormatted}`);
+  lines.push(`- *Total:* ${totalFormatted}`);
   lines.push(`- *Frete:* GRATIS (Registro Modico Correios)`);
 
   if (customerName) {
-    lines.push(`- *Meu Nome:* ${customerName}`);
+    lines.push(`- *Nome:* ${customerName}`);
   }
   if (customerAddress) {
-    lines.push(`- *Endereco / CEP de Envio:* ${customerAddress}`);
+    lines.push(`- *Endereco de Envio:* ${customerAddress}`);
   }
 
   lines.push(``);
-  lines.push(`Os livros ainda estao disponiveis? Como podemos combinar o pagamento e o envio gratuito?`);
+  lines.push(`Os livros estao disponiveis? Como podemos combinar o pagamento e o envio?`);
 
   sendWhatsAppMessage(lines.join('\n'));
 }
@@ -578,29 +484,22 @@ function sendWhatsAppMessage(text) {
   window.open(url, '_blank', 'noopener,noreferrer');
 }
 
-// ==========================================================================
-// 8. Toast de Notificações
-// ==========================================================================
+// Toast
 function showToast(message) {
   const toast = document.createElement('div');
   toast.className = 'toast';
-  toast.innerHTML = `<span>✓</span> <span>${message}</span>`;
+  toast.textContent = message;
 
   DOM.toastContainer.appendChild(toast);
 
   setTimeout(() => {
     toast.style.opacity = '0';
-    toast.style.transform = 'translateY(10px)';
-    toast.style.transition = 'all 0.3s ease';
-    setTimeout(() => toast.remove(), 300);
-  }, 3200);
+    setTimeout(() => toast.remove(), 250);
+  }, 2500);
 }
 
-// ==========================================================================
-// 9. Event Listeners Globais
-// ==========================================================================
+// Event Listeners
 function setupEventListeners() {
-  // Seletor de Categorias
   const categoryPills = DOM.categoriesNav.querySelectorAll('.category-pill');
   categoryPills.forEach(pill => {
     pill.addEventListener('click', () => {
@@ -611,7 +510,6 @@ function setupEventListeners() {
     });
   });
 
-  // Busca em tempo real
   DOM.searchInput.addEventListener('input', applyFiltersAndSort);
   DOM.clearSearchBtn.addEventListener('click', () => {
     DOM.searchInput.value = '';
@@ -621,50 +519,37 @@ function setupEventListeners() {
   DOM.resetSearchBtn.addEventListener('click', () => {
     DOM.searchInput.value = '';
     state.currentCategory = 'todos';
-    categoryPills.forEach(p => {
-      p.classList.toggle('is-active', p.dataset.category === 'todos');
-    });
+    categoryPills.forEach(p => p.classList.toggle('is-active', p.dataset.category === 'todos'));
     applyFiltersAndSort();
   });
 
-  // Ordenação
   DOM.sortSelect.addEventListener('change', applyFiltersAndSort);
 
-  // Modal de Detalhes
   DOM.modalCloseBtn.addEventListener('click', closeBookModal);
   DOM.bookModal.addEventListener('click', (e) => {
     if (e.target === DOM.bookModal) closeBookModal();
   });
 
-  // Sacola
   DOM.cartToggleBtn.addEventListener('click', openCartDrawer);
   DOM.cartCloseBtn.addEventListener('click', closeCartDrawer);
   DOM.cartDrawerBackdrop.addEventListener('click', (e) => {
     if (e.target === DOM.cartDrawerBackdrop) closeCartDrawer();
   });
 
-  DOM.cartStartShoppingBtn.addEventListener('click', () => {
-    closeCartDrawer();
-  });
-
+  DOM.cartStartShoppingBtn.addEventListener('click', () => closeCartDrawer());
   DOM.cartCheckoutBtn.addEventListener('click', checkoutCartViaWhatsApp);
 
   DOM.cartClearBtn.addEventListener('click', () => {
-    if (confirm('Deseja realmente esvaziar todos os itens da sacola?')) {
+    if (confirm('Esvaziar a sacola?')) {
       state.cart = [];
       saveCartToStorage();
-      showToast('Sacola esvaziada.');
     }
   });
 
-  // Tecla Esc
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      if (DOM.bookModal.classList.contains('is-open')) {
-        closeBookModal();
-      } else if (DOM.cartDrawerBackdrop.classList.contains('is-open')) {
-        closeCartDrawer();
-      }
+      if (DOM.bookModal.classList.contains('is-open')) closeBookModal();
+      else if (DOM.cartDrawerBackdrop.classList.contains('is-open')) closeCartDrawer();
     }
   });
 }

@@ -18,19 +18,19 @@
   <header class="admin-header">
     <div class="admin-container admin-header__content">
       <div class="admin-brand">
-        <span class="admin-badge-local">Painel Local</span>
-        <h1>☕ Lojinha do Dev <span>• Gestão de Livros &amp; Categorias</span></h1>
+        <span class="admin-badge-local">Local</span>
+        <h1>Lojinha do Dev <span>• Admin</span></h1>
       </div>
 
       <div class="admin-header__actions">
-        <a href="/" target="_blank" class="btn btn-outline" title="Abrir a loja em nova aba">
-          🌐 Ver Loja Pública
+        <a href="/" target="_blank" class="btn btn-outline" title="Abrir a loja">
+          Ver Loja
         </a>
-        <button id="backupBtn" class="btn btn-outline" title="Baixar uma cópia de segurança do produtos.json">
-          💾 Baixar Backup JSON
+        <button id="backupBtn" class="btn btn-outline" title="Baixar cópia de segurança">
+          Backup JSON
         </button>
         <button id="newBookBtn" class="btn btn-primary">
-          + Cadastrar Livro
+          + Novo Livro
         </button>
       </div>
     </div>
@@ -39,12 +39,8 @@
   <!-- Conteúdo Principal -->
   <main class="admin-container admin-main">
 
-    <!-- Notificação informativa sobre o deploy e frete grátis -->
     <div class="admin-alert-banner">
-      <div class="alert-icon">💡</div>
-      <div class="alert-text">
-        <strong>Ambiente Local Seguro &amp; Frete Grátis:</strong> Este painel atualiza diretamente o seu arquivo <code>produtos.json</code> no disco. Todos os livros da loja possuem <strong>Frete Grátis</strong> (via Registro Módico Correios). Para publicar no GitHub Pages, basta comitar e subir o <code>produtos.json</code> e as novas fotos.
-      </div>
+      <span>💡 As alterações são salvas diretamente no <code>produtos.json</code>. Este painel fica apenas na sua máquina e não é enviado no deploy.</span>
     </div>
 
     <!-- Cards de Métricas / Estoque -->
