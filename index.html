@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lojinha do Dev ☕ Livros de Programação & Tecnologia</title>
+  <meta name="description" content="Lojinha aconchegante de livros de programação e tecnologia. Exemplares com fotos detalhadas do estado real e negociação direta pelo WhatsApp.">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
+  
+  <!-- Fontes Google: Lora (serif aconchegante) + Plus Jakarta Sans (sans legível) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Folha de Estilos Principal -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Barra Superior de Destaque -->
+  <aside class="top-announcement">
+    <div class="container top-announcement__content">
+      <span>☕ Livros físicos para desenvolvedores • Fotos reais de cada exemplar • Negociação direta</span>
+      <a href="https://wa.me/5569993306972" target="_blank" rel="noopener noreferrer" class="top-announcement__link">
+        Falar no WhatsApp: (69) 99330-6972
+      </a>
+    </div>
+  </aside>
+
+  <!-- Cabeçalho Principal -->
+  <header class="header">
+    <div class="container header__container">
+      <a href="./" class="brand">
+        <div class="brand__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+            <path d="M6 6h10"></path>
+            <path d="M6 10h10"></path>
+            <path d="M18 14h-8"></path>
+          </svg>
+        </div>
+        <div class="brand__text">
+          <span class="brand__title">Lojinha do Dev</span>
+          <span class="brand__tagline">Livros com história para sua estante</span>
+        </div>
+      </a>
+
+      <!-- Barra de Pesquisa Rápida -->
+      <div class="header__search">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Buscar por título ou autor..." aria-label="Pesquisar livros">
+        <button id="clearSearchBtn" class="search-clear-btn" aria-label="Limpar pesquisa" title="Limpar">✕</button>
+      </div>
+
+      <!-- Botão da Sacola / Carrinho -->
+      <div class="header__actions">
+        <button id="cartToggleBtn" class="cart-button" aria-label="Abrir sacola de compras">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="cart-button__label">Sacola</span>
+          <span id="cartCountBadge" class="cart-badge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Banner Hero Aconchegante -->
+  <section class="hero-section">
+    <div class="container hero-container">
+      <div class="hero-text">
+        <div class="hero-chip">
+          <span>🌿 Cantinho do Leitor Dev</span>
+        </div>
+        <h1 class="hero-title">Livros clássicos &amp; modernos buscando uma nova estante.</h1>
+        <p class="hero-subtitle">
+          Cada exemplar aqui foi lido, cuidado e agora pode fazer parte da sua evolução como dev. Veja fotos transparentes de todos os ângulos: capa, verso, lombadas, folhas e detalhes do estado real.
+        </p>
+      </div>
+
+      <div class="hero-features">
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <div>
+            <strong>Transparência Total</strong>
+            <p>Fotos da frente, verso, lombadas e detalhes com legenda explicativa.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <div>
+            <strong>Compra Descomplicada</strong>
+            <p>Envie sua sacola direto para o meu WhatsApp com um clique.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📦</div>
+          <div>
+            <strong>Envio Seguro</strong>
+            <p>Livros bem embalados com plástico bolha e carinho.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catálogo de Produtos -->
+  <main class="main-content container">
+    <!-- Barra de Filtros e Contagem -->
+    <div class="catalog-toolbar">
+      <div class="catalog-info">
+        <h2 class="catalog-title">Livros Disponíveis</h2>
+        <span id="catalogCount" class="catalog-count">Carregando acervo...</span>
+      </div>
+
+      <div class="catalog-sort">
+        <label for="sortSelect">Ordenar por:</label>
+        <select id="sortSelect" class="form-select">
+          <option value="default">Padrão</option>
+          <option value="price-asc">Menor Preço</option>
+          <option value="price-desc">Maior Preço</option>
+          <option value="name-asc">Título (A-Z)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Grid de Livros -->
+    <div id="productGrid" class="product-grid" aria-live="polite">
+      <!-- Inserido dinamicamente via JS -->
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Buscando os livros na estante...</p>
+      </div>
+    </div>
+
+    <!-- Estado Vazio (caso não encontre livros na busca) -->
+    <div id="emptyCatalogState" class="empty-state" style="display: none;">
+      <div class="empty-icon">☕📖</div>
+      <h3>Nenhum livro encontrado</h3>
+      <p id="emptyStateMessage">Não encontramos nenhum exemplar com esse termo de busca.</p>
+      <button id="resetSearchBtn" class="btn btn-secondary">Limpar Busca</button>
+    </div>
+  </main>
+
+  <!-- Modal de Detalhes e Fotos do Livro -->
+  <div id="bookModal" class="modal-backdrop" aria-hidden="true" role="dialog" aria-labelledby="modalBookTitle">
+    <div class="modal-card">
+      <button id="modalCloseBtn" class="modal-close-btn" aria-label="Fechar detalhes do livro">✕</button>
+
+      <div class="modal-layout">
+        <!-- Galeria de Fotos e Ângulos -->
+        <div class="modal-gallery">
+          <div class="gallery-main-container">
+            <img id="galleryMainImg" src="" alt="Foto do Livro" class="gallery-main-img">
+            <span id="galleryCurrentBadge" class="gallery-current-badge">Frente</span>
+          </div>
+
+          <!-- Legenda em Destaque para Fotos de Detalhes -->
+          <div id="galleryCaptionBox" class="gallery-caption-box" style="display: none;">
+            <div class="caption-header">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+              <strong>Observação do Estado:</strong>
+            </div>
+            <p id="galleryCaptionText" class="caption-text"></p>
+          </div>
+
+          <!-- Carrossel de Miniaturas / Seleção de Ângulos -->
+          <div class="gallery-angles-label">Escolha o ângulo para inspecionar:</div>
+          <div id="galleryThumbs" class="gallery-thumbs-bar">
+            <!-- Miniaturas geradas dinamicamente: Frente, Verso, Lombadas, Folhas, Detalhes -->
+          </div>
+        </div>
+
+        <!-- Informações e Ações do Livro -->
+        <div class="modal-details">
+          <div class="modal-details__header">
+            <span id="modalBookCondition" class="book-condition-badge">Seminovo</span>
+            <h2 id="modalBookTitle" class="modal-book-title">Título do Livro</h2>
+            <p id="modalBookAuthor" class="modal-book-author">Autor do Livro</p>
+          </div>
+
+          <div class="modal-price-box">
+            <span class="price-prefix">Valor do exemplar:</span>
+            <span id="modalBookPrice" class="modal-book-price">R$ 0,00</span>
+          </div>
+
+          <div class="modal-description-box">
+            <h3>Sobre este exemplar:</h3>
+            <p id="modalBookDescription">Descrição detalhada do livro...</p>
+          </div>
+
+          <div class="modal-trust-info">
+            <div class="trust-item">
+              <span>✨</span>
+              <span>Foto real do livro que será enviado para você.</span>
+            </div>
+            <div class="trust-item">
+              <span>🚚</span>
+              <span>Frete a calcular de acordo com o seu CEP.</span>
+            </div>
+          </div>
+
+          <!-- Ações de Compra -->
+          <div class="modal-actions">
+            <button id="modalBuyNowBtn" class="btn btn-primary btn-block">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.24-.74-.66-1.24-1.48-1.39-1.73-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.49-.4-.42-.56-.43h-.47c-.17 0-.44.06-.67.31-.23.25-.89.87-.89 2.12 0 1.25.91 2.46 1.04 2.63.13.17 1.8 2.75 4.36 3.86.61.26 1.09.42 1.46.54.61.2 1.17.17 1.61.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.16-.48-.28Z"/>
+              </svg>
+              Comprar agora pelo WhatsApp
+            </button>
+            <button id="modalAddToCartBtn" class="btn btn-secondary btn-block">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+              Adicionar à Minha Sacola
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gaveta Lateral da Sacola / Carrinho (Offcanvas Drawer) -->
+  <div id="cartDrawerBackdrop" class="cart-drawer-backdrop" aria-hidden="true">
+    <aside class="cart-drawer" role="dialog" aria-labelledby="cartDrawerTitle">
+      <div class="cart-drawer__header">
+        <div class="cart-drawer__title-wrap">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <h2 id="cartDrawerTitle">Minha Sacola</h2>
+        </div>
+        <button id="cartCloseBtn" class="cart-drawer__close" aria-label="Fechar sacola">✕</button>
+      </div>
+
+      <!-- Conteúdo com Itens -->
+      <div id="cartItemsList" class="cart-drawer__body">
+        <!-- Renderizado dinamicamente via JS -->
+      </div>
+
+      <!-- Estado Vazio da Sacola -->
+      <div id="cartEmptyState" class="cart-empty-state" style="display: none;">
+        <div class="cart-empty-icon">☕📚</div>
+        <h3>Sua sacola está vazia</h3>
+        <p>Explore as prateleiras da lojinha e adicione os livros que deseja levar.</p>
+        <button id="cartStartShoppingBtn" class="btn btn-secondary">Explorar Livros</button>
+      </div>
+
+      <!-- Rodapé da Sacola com Total e Finalização -->
+      <div id="cartFooter" class="cart-drawer__footer">
+        <!-- Campos opcionais para enriquecer a mensagem -->
+        <div class="cart-extra-inputs">
+          <label for="customerNameInput" class="input-label">Seu Nome (opcional):</label>
+          <input type="text" id="customerNameInput" class="form-input" placeholder="Ex: Lucas dev">
+
+          <label for="customerCepInput" class="input-label">Seu CEP (para cálculo de frete):</label>
+          <input type="text" id="customerCepInput" class="form-input" placeholder="Ex: 76801-000">
+        </div>
+
+        <div class="cart-summary">
+          <div class="cart-summary-row">
+            <span>Subtotal (<span id="cartTotalItemsCount">0</span> itens):</span>
+            <strong id="cartSubtotalValue">R$ 0,00</strong>
+          </div>
+          <div class="cart-summary-row cart-summary-row--total">
+            <span>Total dos Livros:</span>
+            <strong id="cartTotalValue">R$ 0,00</strong>
+          </div>
+          <p class="cart-shipping-note">🌿 O frete será calculado e combinado diretamente pelo WhatsApp.</p>
+        </div>
+
+        <button id="cartCheckoutBtn" class="btn btn-primary btn-block btn-checkout">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.24-.74-.66-1.24-1.48-1.39-1.73-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.49-.4-.42-.56-.43h-.47c-.17 0-.44.06-.67.31-.23.25-.89.87-.89 2.12 0 1.25.91 2.46 1.04 2.63.13.17 1.8 2.75 4.36 3.86.61.26 1.09.42 1.46.54.61.2 1.17.17 1.61.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.16-.48-.28Z"/>
+          </svg>
+          Finalizar Pedido no WhatsApp
+        </button>
+
+        <button id="cartClearBtn" class="cart-clear-link">Esvaziar sacola</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Rodapé Aconchegante -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <div class="footer-brand-title">☕ Lojinha do Dev</div>
+        <p class="footer-brand-desc">
+          Livros lidos, amados e repassados para inspirar novas jornadas de desenvolvimento.
+        </p>
+      </div>
+      <div class="footer-contact">
+        <h4>Contato Direto</h4>
+        <p>WhatsApp: <a href="https://wa.me/5569993306972" target="_blank" rel="noopener noreferrer">(69) 99330-6972</a></p>
+        <p class="footer-note">Hospedado com carinho no GitHub Pages</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script Principal da Loja -->
+  <script src="js/app.js"></script>
+</body>
+</html>

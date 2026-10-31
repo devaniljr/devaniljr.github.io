@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Lojinha do Dev (Local)</title>
+  
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- Barra Superior do Admin -->
+  <header class="admin-header">
+    <div class="admin-container admin-header__content">
+      <div class="admin-brand">
+        <span class="admin-badge-local">Painel Local</span>
+        <h1>☕ Lojinha do Dev <span>• Gestão de Livros</span></h1>
+      </div>
+
+      <div class="admin-header__actions">
+        <a href="/" target="_blank" class="btn btn-outline" title="Abrir a loja em nova aba">
+          🌐 Ver Loja Pública
+        </a>
+        <button id="backupBtn" class="btn btn-outline" title="Baixar uma cópia de segurança do produtos.json">
+          💾 Baixar Backup JSON
+        </button>
+        <button id="newBookBtn" class="btn btn-primary">
+          + Cadastrar Livro
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main class="admin-container admin-main">
+
+    <!-- Notificação informativa sobre o deploy -->
+    <div class="admin-alert-banner">
+      <div class="alert-icon">💡</div>
+      <div class="alert-text">
+        <strong>Ambiente Local Seguro:</strong> Este painel atualiza diretamente o seu arquivo <code>produtos.json</code> no disco. Para publicar as alterações no GitHub Pages, basta comitar e subir o <code>produtos.json</code> (e as imagens novas). Este painel admin não é enviado no deploy!
+      </div>
+    </div>
+
+    <!-- Cards de Métricas / Estoque -->
+    <section class="metrics-grid">
+      <div class="metric-card">
+        <span class="metric-label">Total Cadastrado</span>
+        <strong id="metricTotal" class="metric-value">0</strong>
+      </div>
+      <div class="metric-card metric-card--available">
+        <span class="metric-label">Disponíveis na Loja</span>
+        <strong id="metricAvailable" class="metric-value">0</strong>
+      </div>
+      <div class="metric-card metric-card--sold">
+        <span class="metric-label">Marcados como Vendidos</span>
+        <strong id="metricSold" class="metric-value">0</strong>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Valor em Estoque Ativo</span>
+        <strong id="metricTotalValue" class="metric-value">R$ 0,00</strong>
+      </div>
+    </section>
+
+    <!-- Barra de Filtros e Busca do Admin -->
+    <section class="admin-toolbar">
+      <div class="search-wrap">
+        <input type="text" id="adminSearchInput" placeholder="Buscar livro por título ou autor..." class="admin-search-input">
+      </div>
+
+      <div class="status-filters">
+        <button class="filter-btn is-active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="available">Disponíveis</button>
+        <button class="filter-btn" data-filter="sold">Vendidos</button>
+      </div>
+    </section>
+
+    <!-- Tabela / Lista de Livros -->
+    <section class="admin-table-container">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th width="70">Capa</th>
+            <th>Título &amp; Autor</th>
+            <th width="120">Valor</th>
+            <th width="140">Estado Físico</th>
+            <th width="150">Status na Loja</th>
+            <th width="180">Ações Rápidas</th>
+          </tr>
+        </thead>
+        <tbody id="booksTableBody">
+          <!-- Carregado via JS -->
+          <tr>
+            <td colspan="6" class="table-loading">Carregando catálogo de livros...</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Modal de Cadastro / Edição de Livro -->
+  <div id="bookFormModal" class="admin-modal-backdrop" aria-hidden="true">
+    <div class="admin-modal-card">
+      <div class="admin-modal-header">
+        <h2 id="modalFormTitle">Cadastrar Novo Livro</h2>
+        <button id="closeModalBtn" class="close-btn" aria-label="Fechar">✕</button>
+      </div>
+
+      <form id="bookForm" class="admin-form">
+        <input type="hidden" id="bookId">
+
+        <!-- Informações Básicas -->
+        <div class="form-section">
+          <h3 class="form-section-title">1. Informações Básicas</h3>
+          
+          <div class="form-row form-row--2">
+            <div class="form-group">
+              <label for="bookNome" class="required">Nome / Título do Livro:</label>
+              <input type="text" id="bookNome" class="form-control" required placeholder="Ex: O Programador Pragmático">
+            </div>
+
+            <div class="form-group">
+              <label for="bookAutor">Autor(es):</label>
+              <input type="text" id="bookAutor" class="form-control" placeholder="Ex: Andrew Hunt & David Thomas">
+            </div>
+          </div>
+
+          <div class="form-row form-row--2">
+            <div class="form-group">
+              <label for="bookValor" class="required">Valor em Reais (R$):</label>
+              <input type="number" step="0.50" min="0" id="bookValor" class="form-control" required placeholder="Ex: 65.00">
+            </div>
+
+            <div class="form-group">
+              <label for="bookEstado">Condição Geral do Livro:</label>
+              <select id="bookEstado" class="form-control">
+                <option value="Como Novo">Como Novo (Sem marcas de uso)</option>
+                <option value="Seminovo - Excelente" selected>Seminovo - Excelente</option>
+                <option value="Usado - Ótimo estado">Usado - Ótimo estado</option>
+                <option value="Usado - Marcas leves de leitura">Usado - Marcas leves de leitura</option>
+                <option value="Usado com anotações/grifos">Usado com anotações/grifos</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="bookDescricao">Descrição / Sinopse / Notas sobre o livro:</label>
+            <textarea id="bookDescricao" rows="3" class="form-control" placeholder="Detalhes que ajudam o comprador a entender a edição, tradução ou conteúdo..."></textarea>
+          </div>
+
+          <div class="form-group-checkbox">
+            <label class="checkbox-container">
+              <input type="checkbox" id="bookVendido">
+              <span class="checkmark"></span>
+              <span class="checkbox-label">
+                <strong>Marcar como VENDIDO</strong> 
+                <small>(Quando marcado, o livro fica ocultado automaticamente de toda a loja pública)</small>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Fotos Padrão Obrigatórias / Recomendadas -->
+        <div class="form-section">
+          <h3 class="form-section-title">2. Fotos dos Ângulos Padrão</h3>
+          <p class="form-section-desc">Você pode fazer upload direto da foto (salva automaticamente em <code>images/produtos/</code>) ou digitar o caminho/URL.</p>
+
+          <div class="photos-grid">
+            <!-- Frente -->
+            <div class="photo-upload-box" data-key="frente">
+              <span class="photo-label required">Capa (Frente)</span>
+              <div class="photo-preview-wrap">
+                <img id="prev_frente" src="/images/placeholder-book.svg" alt="Preview Frente" class="photo-preview">
+              </div>
+              <div class="photo-inputs">
+                <label class="btn-file-upload">
+                  📁 Selecionar Arquivo
+                  <input type="file" accept="image/*" class="file-input" onchange="handleFileUpload(event, 'frente')">
+                </label>
+                <input type="text" id="img_frente" class="form-control form-control--sm" placeholder="images/produtos/... ou URL">
+              </div>
+            </div>
+
+            <!-- Verso -->
+            <div class="photo-upload-box" data-key="verso">
+              <span class="photo-label">Contracapa (Verso)</span>
+              <div class="photo-preview-wrap">
+                <img id="prev_verso" src="/images/placeholder-book.svg" alt="Preview Verso" class="photo-preview">
+              </div>
+              <div class="photo-inputs">
+                <label class="btn-file-upload">
+                  📁 Selecionar Arquivo
+                  <input type="file" accept="image/*" class="file-input" onchange="handleFileUpload(event, 'verso')">
+                </label>
+                <input type="text" id="img_verso" class="form-control form-control--sm" placeholder="images/produtos/... ou URL">
+              </div>
+            </div>
+
+            <!-- Lombada 1 -->
+            <div class="photo-upload-box" data-key="lombada1">
+              <span class="photo-label">Lombada (Ângulo 1)</span>
+              <div class="photo-preview-wrap">
+                <img id="prev_lombada1" src="/images/placeholder-book.svg" alt="Preview Lombada 1" class="photo-preview">
+              </div>
+              <div class="photo-inputs">
+                <label class="btn-file-upload">
+                  📁 Selecionar Arquivo
+                  <input type="file" accept="image/*" class="file-input" onchange="handleFileUpload(event, 'lombada1')">
+                </label>
+                <input type="text" id="img_lombada1" class="form-control form-control--sm" placeholder="images/produtos/... ou URL">
+              </div>
+            </div>
+
+            <!-- Lombada 2 -->
+            <div class="photo-upload-box" data-key="lombada2">
+              <span class="photo-label">Lombada (Ângulo 2)</span>
+              <div class="photo-preview-wrap">
+                <img id="prev_lombada2" src="/images/placeholder-book.svg" alt="Preview Lombada 2" class="photo-preview">
+              </div>
+              <div class="photo-inputs">
+                <label class="btn-file-upload">
+                  📁 Selecionar Arquivo
+                  <input type="file" accept="image/*" class="file-input" onchange="handleFileUpload(event, 'lombada2')">
+                </label>
+                <input type="text" id="img_lombada2" class="form-control form-control--sm" placeholder="images/produtos/... ou URL">
+              </div>
+            </div>
+
+            <!-- Folhas / Corte -->
+            <div class="photo-upload-box" data-key="folhas">
+              <span class="photo-label">Folhas (Corte / Miolo)</span>
+              <div class="photo-preview-wrap">
+                <img id="prev_folhas" src="/images/placeholder-book.svg" alt="Preview Folhas" class="photo-preview">
+              </div>
+              <div class="photo-inputs">
+                <label class="btn-file-upload">
+                  📁 Selecionar Arquivo
+                  <input type="file" accept="image/*" class="file-input" onchange="handleFileUpload(event, 'folhas')">
+                </label>
+                <input type="text" id="img_folhas" class="form-control form-control--sm" placeholder="images/produtos/... ou URL">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detalhes do Estado (com legenda explicativa) -->
+        <div class="form-section">
+          <div class="form-section-header">
+            <div>
+              <h3 class="form-section-title">3. Detalhes Específicos &amp; Legendas Explicativas</h3>
+              <p class="form-section-desc">Adicione quantas fotos de detalhe forem necessárias para mostrar marcas, grifos, dobras ou o estado impecável do livro.</p>
+            </div>
+            <button type="button" id="addDetailBtn" class="btn btn-secondary btn-sm">
+              + Adicionar Foto de Detalhe
+            </button>
+          </div>
+
+          <div id="detailsListContainer" class="details-list-container">
+            <!-- Linhas de detalhes dinâmicas inseridas via JS -->
+          </div>
+        </div>
+
+        <!-- Botões do Formulário -->
+        <div class="admin-modal-footer">
+          <button type="button" id="cancelFormBtn" class="btn btn-outline">Cancelar</button>
+          <button type="submit" id="saveBookBtn" class="btn btn-primary">Salvar no produtos.json</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="adminToast" class="admin-toast"></div>
+
+  <!-- Script Admin -->
+  <script src="admin.js"></script>
+</body>
+</html>

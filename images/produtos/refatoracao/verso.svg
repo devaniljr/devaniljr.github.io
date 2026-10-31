@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 560" width="400" height="560">
+    <rect width="400" height="560" rx="12" fill="#234E52"/>
+    <rect x="30" y="40" width="340" height="180" rx="6" fill="#000" fill-opacity="0.2"/>
+    <text x="200" y="80" font-family="'Lora', serif" font-size="18" font-weight="bold" fill="#4FD1C5" text-anchor="middle">Sinopse da Obra</text>
+    <text x="200" y="115" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" fill="#FFFFFF" text-anchor="middle">Exemplar em excelente estado de conservação.</text>
+    <text x="200" y="140" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" fill="#FFFFFF" text-anchor="middle">Sem rasgos, texto totalmente preservado.</text>
+    <text x="200" y="165" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" fill="#FFFFFF" text-anchor="middle">Ideal para sua estante e estudos de programação.</text>
+    <rect x="140" y="380" width="120" height="50" rx="4" fill="#FFFFFF"/>
+    <text x="200" y="410" font-family="monospace" font-size="16" fill="#111" text-anchor="middle">|||| | ||||| | |||</text>
+    <text x="200" y="425" font-family="monospace" font-size="9" fill="#333" text-anchor="middle">978-85-7522-814-2</text>
+    <text x="200" y="490" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" fill="#FFFFFF" opacity="0.7" text-anchor="middle">[FOTO: CONTRA-CAPA / VERSO]</text>
+  </svg>

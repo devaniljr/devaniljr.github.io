@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420" width="300" height="420">
+  <rect width="300" height="420" rx="10" fill="#EFE8DE"/>
+  <rect x="15" y="15" width="270" height="390" rx="6" fill="#F7F2EB" stroke="#DDD2C4" stroke-width="2"/>
+  <circle cx="150" cy="180" r="45" fill="#E2D4C3"/>
+  <text x="150" y="192" font-family="serif" font-size="36" text-anchor="middle" fill="#8C7D70">📖</text>
+  <text x="150" y="260" font-family="'Lora', serif, Georgia" font-size="16" font-weight="bold" fill="#5C4D42" text-anchor="middle">
+    Foto em breve
+  </text>
+  <text x="150" y="285" font-family="sans-serif" font-size="12" fill="#8C7D70" text-anchor="middle">
+    Lojinha do Dev
+  </text>
+</svg>

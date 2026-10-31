@@ -1,0 +1,124 @@
+[
+  {
+    "id": "1",
+    "nome": "O Programador Pragmático: De Aprendiz a Mestre",
+    "autor": "David Thomas & Andrew Hunt",
+    "valor": 68.0,
+    "descricao": "Edição comemorativa de 20 anos revisada. Livro clássico com lições atemporais sobre desenvolvimento de software, postura profissional e boas práticas.",
+    "estado": "Seminovo - Excelente",
+    "imagens": {
+      "frente": "images/produtos/pragmatic-programmer/frente.svg",
+      "verso": "images/produtos/pragmatic-programmer/verso.svg",
+      "lombada1": "images/produtos/pragmatic-programmer/lombada1.svg",
+      "lombada2": "images/produtos/pragmatic-programmer/lombada2.svg",
+      "folhas": "images/produtos/pragmatic-programmer/folhas.svg",
+      "detalhes": [
+        {
+          "url": "images/produtos/pragmatic-programmer/detalhe1.svg",
+          "legenda": "Canto superior direito com levíssima marca de guardado na estante, sem nenhum rasgo."
+        },
+        {
+          "url": "images/produtos/pragmatic-programmer/detalhe2.svg",
+          "legenda": "Folhas 100% limpas, brancas, sem anotações, rabiscos ou grifos de marca-texto."
+        }
+      ]
+    },
+    "vendido": false
+  },
+  {
+    "id": "2",
+    "nome": "Código Limpo: Habilidades Práticas do Agile Software",
+    "autor": "Robert C. Martin (Uncle Bob)",
+    "valor": 75.0,
+    "descricao": "Manual de boas práticas para escrever código legível, manutenível e de alta qualidade. Leitura essencial para todo desenvolvedor.",
+    "estado": "Usado - Ótimo estado",
+    "imagens": {
+      "frente": "images/produtos/clean-code/frente.svg",
+      "verso": "images/produtos/clean-code/verso.svg",
+      "lombada1": "images/produtos/clean-code/lombada1.svg",
+      "lombada2": "images/produtos/clean-code/lombada2.svg",
+      "folhas": "images/produtos/clean-code/folhas.svg",
+      "detalhes": [
+        {
+          "url": "images/produtos/clean-code/detalhe1.svg",
+          "legenda": "Lombada e encadernação firmes, nunca foi forçado na abertura."
+        },
+        {
+          "url": "images/produtos/clean-code/detalhe2.svg",
+          "legenda": "Páginas internas preservadas. Apenas uma assinatura discreta a lápis na folha de rosto."
+        }
+      ]
+    },
+    "vendido": false
+  },
+  {
+    "id": "3",
+    "nome": "Entendendo Algoritmos: Um Guia Ilustrado",
+    "autor": "Aditya Y. Bhargava",
+    "valor": 52.0,
+    "descricao": "O livro mais didático e visual para aprender estruturas de dados e algoritmos (busca binária, grafos, Dijkstra, programação dinâmica).",
+    "estado": "Como Novo",
+    "imagens": {
+      "frente": "images/produtos/entendendo-algoritmos/frente.svg",
+      "verso": "images/produtos/entendendo-algoritmos/verso.svg",
+      "lombada1": "images/produtos/entendendo-algoritmos/lombada1.svg",
+      "lombada2": "images/produtos/entendendo-algoritmos/lombada2.svg",
+      "folhas": "images/produtos/entendendo-algoritmos/folhas.svg",
+      "detalhes": [
+        {
+          "url": "images/produtos/entendendo-algoritmos/detalhe1.svg",
+          "legenda": "Capa sem vincos e com laminação brilhante preservada."
+        },
+        {
+          "url": "images/produtos/entendendo-algoritmos/detalhe2.svg",
+          "legenda": "Todas as ilustrações e páginas em estado de loja."
+        }
+      ]
+    },
+    "vendido": false
+  },
+  {
+    "id": "4",
+    "nome": "Refatoração: Aperfeiçoando o Projeto de Código Existente",
+    "autor": "Martin Fowler",
+    "valor": 84.0,
+    "descricao": "2ª Edição com exemplos em JavaScript. Um catálogo prático de técnicas para melhorar o design e arquitetura do código passo a passo.",
+    "estado": "Seminovo",
+    "imagens": {
+      "frente": "images/produtos/refatoracao/frente.svg",
+      "verso": "images/produtos/refatoracao/verso.svg",
+      "lombada1": "images/produtos/refatoracao/lombada1.svg",
+      "lombada2": "images/produtos/refatoracao/lombada2.svg",
+      "folhas": "images/produtos/refatoracao/folhas.svg",
+      "detalhes": [
+        {
+          "url": "images/produtos/refatoracao/detalhe1.svg",
+          "legenda": "Capa e contracapa sem marcas de umidade ou dobras."
+        }
+      ]
+    },
+    "vendido": false
+  },
+  {
+    "id": "5",
+    "nome": "Domain-Driven Design: Atacando as Complexidades no Coração do Software",
+    "autor": "Eric Evans",
+    "valor": 89.0,
+    "descricao": "O famoso Livro Azul do DDD. Aborda modelagem estratégica e tática orientada ao domínio do negócio.",
+    "estado": "Usado",
+    "imagens": {
+      "frente": "images/produtos/ddd/frente.svg",
+      "verso": "images/produtos/ddd/verso.svg",
+      "lombada1": "images/produtos/ddd/lombada1.svg",
+      "lombada2": "images/produtos/ddd/lombada2.svg",
+      "folhas": "images/produtos/ddd/folhas.svg",
+      "detalhes": [
+        {
+          "url": "images/produtos/ddd/detalhe1.svg",
+          "legenda": "Exemplar já vendido para demonstração do filtro."
+        }
+      ]
+    },
+    "vendido": true
+  }
+]

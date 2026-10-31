@@ -1,0 +1,17 @@
+# Dependências
+node_modules/
+package-lock.json
+
+# Diretórios temporários de deploy
+.dist_deploy/
+_site/
+
+# Sistema Operacional e Logs
+.DS_Store
+*.log
+npm-debug.log*
+
+# Caso você queira ignorar o painel admin até mesmo no seu repositório Git pessoal,
+# descomente as duas linhas abaixo:
+# admin/
+# server.js
