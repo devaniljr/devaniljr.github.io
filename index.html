@@ -9,7 +9,7 @@
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
   
-  <!-- Fontes Google: Lora (serif literária aconchegante) + Plus Jakarta Sans (leitura confortável) -->
+  <!-- Fontes Google: Lora (serif literária) + Plus Jakarta Sans (leitura confortável) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -23,10 +23,13 @@
   <aside class="top-announcement">
     <div class="container top-announcement__content">
       <span class="top-announcement__message">
-        🌿 <strong>Frete Grátis</strong> para todo o Brasil via Registro Módico Correios • Livros bem embalados com carinho ☕
+        🌿 <strong>Frete Grátis</strong> para todo o Brasil via Registro Módico Correios ☕
       </span>
       <a href="https://wa.me/5569993306972" target="_blank" rel="noopener noreferrer" class="top-announcement__link">
-        💬 Falar no WhatsApp: (69) 99330-6972
+        <svg class="whatsapp-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.24-.74-.66-1.24-1.48-1.39-1.73-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.49-.4-.42-.56-.43h-.47c-.17 0-.44.06-.67.31-.23.25-.89.87-.89 2.12 0 1.25.91 2.46 1.04 2.63.13.17 1.8 2.75 4.36 3.86.61.26 1.09.42 1.46.54.61.2 1.17.17 1.61.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.16-.48-.28Z"/>
+        </svg>
+        <span>WhatsApp: (69) 99330-6972</span>
       </a>
     </div>
   </aside>
@@ -67,7 +70,7 @@
     </div>
   </header>
 
-  <!-- Seletor de Categorias com Ícones e Emojis Aconchegantes -->
+  <!-- Seletor de Categorias Aconchegante com Emojis -->
   <nav class="categories-bar" aria-label="Categorias de livros">
     <div class="container categories-bar__container">
       <div class="categories-scroll" id="categoriesNav">
@@ -118,7 +121,7 @@
       </div>
     </div>
 
-    <!-- Grid de Livros com Altura Uniforme Perfeita -->
+    <!-- Grid de Livros 100% Uniforme -->
     <div id="productGrid" class="product-grid" aria-live="polite">
       <div class="loading-state">
         <div class="spinner"></div>
@@ -167,8 +170,7 @@
           <div class="modal-details__header">
             <div class="modal-badges-row">
               <span id="modalBookCondition" class="book-condition-badge">Seminovo</span>
-              <div id="modalBookCategory" class="book-categories-wrap"></div>
-              <span class="shipping-badge">🚚 Frete Grátis Incluso</span>
+              <span class="shipping-badge">🚚 Frete Grátis</span>
             </div>
             <h2 id="modalBookTitle" class="modal-book-title">Título do Livro</h2>
             <p id="modalBookAuthor" class="modal-book-author">Autor do Livro</p>
@@ -179,7 +181,6 @@
               <span class="price-prefix">Valor do exemplar:</span>
               <span id="modalBookPrice" class="modal-book-price">R$ 0,00</span>
             </div>
-            <span class="price-note">🌿 Envio gratuito via Correios</span>
           </div>
 
           <div class="modal-description-box">
@@ -187,21 +188,13 @@
             <p id="modalBookDescription">Descrição detalhada do exemplar...</p>
           </div>
 
-          <div class="modal-trust-info">
-            <div class="trust-item">
-              <span>✨</span>
-              <span><strong>Fotos reais</strong> deste exemplar que será enviado para você.</span>
-            </div>
-            <div class="trust-item">
-              <span>📦</span>
-              <span>Bem embalado com proteção para chegar perfeito na sua casa.</span>
-            </div>
-          </div>
-
           <!-- Ações de Compra -->
           <div class="modal-actions">
-            <button id="modalBuyNowBtn" class="btn btn-primary btn-block">
-              💬 Comprar agora pelo WhatsApp
+            <button id="modalBuyNowBtn" class="btn btn-whatsapp btn-block btn-lg">
+              <svg class="whatsapp-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.24-.74-.66-1.24-1.48-1.39-1.73-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.49-.4-.42-.56-.43h-.47c-.17 0-.44.06-.67.31-.23.25-.89.87-.89 2.12 0 1.25.91 2.46 1.04 2.63.13.17 1.8 2.75 4.36 3.86.61.26 1.09.42 1.46.54.61.2 1.17.17 1.61.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.16-.48-.28Z"/>
+              </svg>
+              <span>Comprar pelo WhatsApp</span>
             </button>
             <button id="modalAddToCartBtn" class="btn btn-secondary btn-block">
               🛍️ Adicionar à Minha Sacola
@@ -234,33 +227,28 @@
         <button id="cartStartShoppingBtn" class="btn btn-secondary">Explorar Livros</button>
       </div>
 
-      <!-- Rodapé da Sacola com Total e Finalização -->
+      <!-- Rodapé da Sacola com Total e Finalização (Sem campos de nome/endereço) -->
       <div id="cartFooter" class="cart-drawer__footer">
-        <div class="cart-extra-inputs">
-          <label for="customerNameInput" class="input-label">Seu Nome (opcional):</label>
-          <input type="text" id="customerNameInput" class="form-input" placeholder="Ex: Lucas dev">
-
-          <label for="customerAddressInput" class="input-label">Endereço / CEP de entrega (opcional):</label>
-          <input type="text" id="customerAddressInput" class="form-input" placeholder="Ex: Rua das Flores, 123 - Porto Velho / RO (76801-000)">
-        </div>
-
         <div class="cart-summary">
           <div class="cart-summary-row">
             <span>Subtotal (<span id="cartTotalItemsCount">0</span> livros):</span>
             <strong id="cartSubtotalValue">R$ 0,00</strong>
           </div>
           <div class="cart-summary-row cart-summary-row--shipping">
-            <span>Frete (Registro Módico Correios):</span>
+            <span>Frete Correios:</span>
             <strong class="free-badge">GRÁTIS</strong>
           </div>
           <div class="cart-summary-row cart-summary-row--total">
-            <span>Total dos Livros:</span>
+            <span>Total:</span>
             <strong id="cartTotalValue">R$ 0,00</strong>
           </div>
         </div>
 
-        <button id="cartCheckoutBtn" class="btn btn-primary btn-block btn-checkout">
-          💬 Finalizar Pedido no WhatsApp
+        <button id="cartCheckoutBtn" class="btn btn-whatsapp btn-block btn-lg btn-checkout">
+          <svg class="whatsapp-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.24-.74-.66-1.24-1.48-1.39-1.73-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.49-.4-.42-.56-.43h-.47c-.17 0-.44.06-.67.31-.23.25-.89.87-.89 2.12 0 1.25.91 2.46 1.04 2.63.13.17 1.8 2.75 4.36 3.86.61.26 1.09.42 1.46.54.61.2 1.17.17 1.61.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.16-.48-.28Z"/>
+          </svg>
+          <span>Finalizar Pedido no WhatsApp</span>
         </button>
 
         <button id="cartClearBtn" class="cart-clear-link">Esvaziar sacola</button>
@@ -277,13 +265,20 @@
       <div class="footer-brand">
         <div class="footer-brand-title">☕ Lojinha do Dev</div>
         <p class="footer-brand-desc">
-          Livros lidos, amados e bem cuidados, prontos para inspirar sua próxima linha de código ou reflexão. Envio com carinho para todo o Brasil.
+          Livros lidos, amados e bem cuidados, prontos para inspirar sua próxima linha de código ou reflexão. Envio com frete grátis para todo o Brasil.
         </p>
       </div>
       <div class="footer-contact">
         <h4>Contato Direto</h4>
-        <p>WhatsApp: <a href="https://wa.me/5569993306972" target="_blank" rel="noopener noreferrer">(69) 99330-6972</a></p>
-        <p class="footer-note">Frete Grátis via Registro Módico Correios • GitHub Pages</p>
+        <p>
+          <a href="https://wa.me/5569993306972" target="_blank" rel="noopener noreferrer" class="footer-whatsapp-link">
+            <svg class="whatsapp-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.24-.74-.66-1.24-1.48-1.39-1.73-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.49-.4-.42-.56-.43h-.47c-.17 0-.44.06-.67.31-.23.25-.89.87-.89 2.12 0 1.25.91 2.46 1.04 2.63.13.17 1.8 2.75 4.36 3.86.61.26 1.09.42 1.46.54.61.2 1.17.17 1.61.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.16-.48-.28Z"/>
+            </svg>
+            <span>WhatsApp: (69) 99330-6972</span>
+          </a>
+        </p>
+        <p class="footer-note">Hospedado com carinho no GitHub Pages</p>
       </div>
     </div>
   </footer>

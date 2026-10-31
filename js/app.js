@@ -1,7 +1,6 @@
 /**
  * Lojinha do Dev - Frontend Application
- * Design aconchegante (cozy), grid 100% uniforme, suporte a múltiplas categorias,
- * galeria de fotos com legendas e checkout WhatsApp.
+ * Design aconchegante (cozy), grid 100% uniforme, galeria detalhada e checkout WhatsApp.
  */
 
 // Configurações Globais
@@ -13,15 +12,15 @@ const CONFIG = {
 
 // Estado da Aplicação
 const state = {
-  allProducts: [],        // Apenas produtos disponíveis (vendido === false)
-  filteredProducts: [],   // Produtos filtrados pela categoria/busca/ordenação
-  currentCategory: 'todos',// Categoria ativa
-  cart: [],               // Itens na sacola
-  activeModalBook: null,  // Livro atualmente aberto no modal
-  modalAngles: []         // Ângulos do livro no modal
+  allProducts: [],
+  filteredProducts: [],
+  currentCategory: 'todos',
+  cart: [],
+  activeModalBook: null,
+  modalAngles: []
 };
 
-// Nomes amigáveis e aconchegantes para o cabeçalho
+// Nomes amigáveis para o cabeçalho
 const CATEGORY_NAMES = {
   'todos': '📚 Todos os Livros',
   'especiais': '⭐ Edições Especiais',
@@ -45,7 +44,7 @@ const DOM = {
   sortSelect: document.getElementById('sortSelect'),
   categoriesNav: document.getElementById('categoriesNav'),
 
-  // Modal de Detalhes
+  // Modal
   bookModal: document.getElementById('bookModal'),
   modalCloseBtn: document.getElementById('modalCloseBtn'),
   galleryMainImg: document.getElementById('galleryMainImg'),
@@ -53,7 +52,6 @@ const DOM = {
   galleryCaptionBox: document.getElementById('galleryCaptionBox'),
   galleryCaptionText: document.getElementById('galleryCaptionText'),
   galleryThumbs: document.getElementById('galleryThumbs'),
-  modalBookCategory: document.getElementById('modalBookCategory'),
   modalBookCondition: document.getElementById('modalBookCondition'),
   modalBookTitle: document.getElementById('modalBookTitle'),
   modalBookAuthor: document.getElementById('modalBookAuthor'),
@@ -73,17 +71,14 @@ const DOM = {
   cartTotalItemsCount: document.getElementById('cartTotalItemsCount'),
   cartSubtotalValue: document.getElementById('cartSubtotalValue'),
   cartTotalValue: document.getElementById('cartTotalValue'),
-  customerNameInput: document.getElementById('customerNameInput'),
-  customerAddressInput: document.getElementById('customerAddressInput'),
   cartCheckoutBtn: document.getElementById('cartCheckoutBtn'),
   cartClearBtn: document.getElementById('cartClearBtn'),
   cartStartShoppingBtn: document.getElementById('cartStartShoppingBtn'),
 
-  // Toast
   toastContainer: document.getElementById('toastContainer')
 };
 
-// Formatação de Moeda BRL
+// Formatação BRL
 function formatBRL(value) {
   const number = Number(value) || 0;
   return number.toLocaleString('pt-BR', {
@@ -133,7 +128,7 @@ async function fetchProducts() {
     if (!res.ok) throw new Error(`Erro HTTP: ${res.status}`);
     const rawData = await res.json();
 
-    // REGRA FUNDAMENTAL: Se vendido for true, NUNCA aparece na loja
+    // Filtra vendidos: se vendido for true, NUNCA aparece na loja
     state.allProducts = (Array.isArray(rawData) ? rawData : [])
       .filter(item => item && item.vendido !== true && item.vendido !== 'true');
 
@@ -161,7 +156,7 @@ function applyFiltersAndSort() {
   const activeCat = state.currentCategory;
 
   let list = state.allProducts.filter(book => {
-    // 1. Filtro por Múltiplas Categorias
+    // 1. Filtro por Categoria
     if (activeCat !== 'todos') {
       const bookCats = getBookCategories(book).map(c => normalizeText(c));
       const targetCat = normalizeText(activeCat);
@@ -203,11 +198,7 @@ function applyFiltersAndSort() {
 function renderCatalog() {
   const count = state.filteredProducts.length;
   DOM.catalogCount.textContent = `${count} ${count === 1 ? 'livro disponível' : 'livros disponíveis'}`;
-
-  // Título aconchegante da categoria ativa
   DOM.currentCategoryHeading.textContent = CATEGORY_NAMES[state.currentCategory] || 'Todos os Livros';
-
-  // Botão limpar busca
   DOM.clearSearchBtn.style.display = DOM.searchInput.value ? 'block' : 'none';
 
   if (count === 0) {
@@ -223,16 +214,11 @@ function renderCatalog() {
     const coverUrl = (book.imagens && book.imagens.frente) ? book.imagens.frente : 'images/placeholder-book.svg';
     const condition = book.estado || 'Seminovo';
     const author = book.autor || 'Autor não informado';
-    const cats = getBookCategories(book);
-    const categoryBadge = cats.length > 0 ? cats[0] : 'Livro';
 
     return `
       <article class="book-card" data-id="${book.id}">
         <div class="book-card__cover-wrap" onclick="openBookModal('${book.id}')">
-          <div class="book-card__badges-overlay">
-            <span class="book-card__condition-badge">${condition}</span>
-            <span class="book-card__category-badge">${categoryBadge}</span>
-          </div>
+          <span class="book-card__condition-badge">${condition}</span>
 
           <img 
             src="${coverUrl}" 
@@ -241,7 +227,7 @@ function renderCatalog() {
             loading="lazy"
             onerror="this.src='images/placeholder-book.svg'"
           >
-          <span class="book-card__inspect-hint">🔍 Ver fotos e detalhes</span>
+          <span class="book-card__inspect-hint">🔍 Ver fotos</span>
         </div>
 
         <div class="book-card__body">
@@ -251,13 +237,10 @@ function renderCatalog() {
           <p class="book-card__author">${author}</p>
 
           <div class="book-card__footer">
-            <div class="book-card__price-row">
-              <span class="book-card__price">${formatBRL(book.valor)}</span>
-              <span class="book-card__shipping-note">✓ Frete Grátis</span>
-            </div>
+            <div class="book-card__price">${formatBRL(book.valor)}</div>
 
             <div class="book-card__actions">
-              <button class="btn btn-secondary btn-sm" onclick="openBookModal('${book.id}')" title="Ver fotos e detalhes deste exemplar">
+              <button class="btn btn-secondary btn-sm" onclick="openBookModal('${book.id}')" title="Ver fotos deste livro">
                 🔍 Fotos
               </button>
               <button class="btn btn-primary btn-sm" onclick="handleAddToCart('${book.id}')" title="Adicionar à sacola">
@@ -284,15 +267,6 @@ window.openBookModal = function(bookId) {
   DOM.modalBookAuthor.textContent = book.autor ? `Por ${book.autor}` : '';
   DOM.modalBookPrice.textContent = formatBRL(book.valor);
   DOM.modalBookCondition.textContent = book.estado || 'Exemplar físico';
-
-  // Categorias como tags
-  const cats = getBookCategories(book);
-  if (cats.length > 0) {
-    DOM.modalBookCategory.innerHTML = cats.map(c => `<span class="book-category-tag">${c}</span>`).join('');
-  } else {
-    DOM.modalBookCategory.innerHTML = '<span class="book-category-tag">Geral</span>';
-  }
-
   DOM.modalBookDescription.textContent = book.descricao || 'Exemplar bem cuidado, pronto para leitura e pronta entrega.';
 
   // Fotos e ângulos
@@ -486,7 +460,7 @@ function closeCartDrawer() {
 }
 
 // ==========================================================================
-// 7. Integração e Checkout via WhatsApp (Formatação Limpa e Universal)
+// 7. Integração e Checkout via WhatsApp
 // ==========================================================================
 function buySingleBookViaWhatsApp(book) {
   const bookName = book.nome || 'Livro';
@@ -512,8 +486,6 @@ function checkoutCartViaWhatsApp() {
 
   const total = state.cart.reduce((sum, item) => sum + (Number(item.valor) || 0), 0);
   const totalFormatted = formatBRL(total);
-  const customerName = (DOM.customerNameInput.value || '').trim();
-  const customerAddress = (DOM.customerAddressInput.value || '').trim();
 
   const lines = [
     `*Lojinha do Dev - Pedido*`,
@@ -528,18 +500,10 @@ function checkoutCartViaWhatsApp() {
   });
 
   lines.push(``);
-  lines.push(`- *Total dos Livros:* ${totalFormatted}`);
+  lines.push(`- *Total:* ${totalFormatted}`);
   lines.push(`- *Frete:* GRATIS (Registro Modico Correios)`);
-
-  if (customerName) {
-    lines.push(`- *Meu Nome:* ${customerName}`);
-  }
-  if (customerAddress) {
-    lines.push(`- *Endereco / CEP de Envio:* ${customerAddress}`);
-  }
-
   lines.push(``);
-  lines.push(`Os livros ainda estao disponiveis? Como podemos combinar o pagamento e o envio gratuito?`);
+  lines.push(`Os livros ainda estao disponiveis? Como combinamos o pagamento e o envio?`);
 
   sendWhatsAppMessage(lines.join('\n'));
 }
