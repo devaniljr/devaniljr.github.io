@@ -130,20 +130,7 @@
             </div>
           </div>
 
-          <div class="form-row form-row--3">
-            <div class="form-group">
-              <label for="bookCategoria" class="required">Categoria do Livro:</label>
-              <select id="bookCategoria" class="form-control" required>
-                <option value="especiais">⭐ Especiais</option>
-                <option value="programação" selected>💻 Programação</option>
-                <option value="filosofia">🏛️ Filosofia</option>
-                <option value="ciência">🔬 Ciência</option>
-                <option value="inglês">🇬🇧 Inglês</option>
-                <option value="espanhol">🇪🇸 Espanhol</option>
-                <option value="concursos">⚖️ Concursos</option>
-              </select>
-            </div>
-
+          <div class="form-row form-row--2">
             <div class="form-group">
               <label for="bookValor" class="required">Valor em Reais (R$):</label>
               <input type="number" step="0.50" min="0" id="bookValor" class="form-control" required placeholder="Ex: 65.00">
@@ -159,6 +146,40 @@
                 <option value="Usado - Marcas leves de leitura">Usado - Marcas leves de leitura</option>
                 <option value="Usado com anotações/grifos">Usado com anotações/grifos</option>
               </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="required">Categorias do Livro (selecione uma ou mais):</label>
+            <div class="category-checkboxes-grid" id="categoryCheckboxesGroup">
+              <label class="category-check-item">
+                <input type="checkbox" name="adminCategorias" value="especiais">
+                <span>⭐ Especiais</span>
+              </label>
+              <label class="category-check-item">
+                <input type="checkbox" name="adminCategorias" value="programação" checked>
+                <span>💻 Programação</span>
+              </label>
+              <label class="category-check-item">
+                <input type="checkbox" name="adminCategorias" value="filosofia">
+                <span>🏛️ Filosofia</span>
+              </label>
+              <label class="category-check-item">
+                <input type="checkbox" name="adminCategorias" value="ciência">
+                <span>🔬 Ciência</span>
+              </label>
+              <label class="category-check-item">
+                <input type="checkbox" name="adminCategorias" value="inglês">
+                <span>🇬🇧 Inglês</span>
+              </label>
+              <label class="category-check-item">
+                <input type="checkbox" name="adminCategorias" value="espanhol">
+                <span>🇪🇸 Espanhol</span>
+              </label>
+              <label class="category-check-item">
+                <input type="checkbox" name="adminCategorias" value="concursos">
+                <span>⚖️ Concursos</span>
+              </label>
             </div>
           </div>
 

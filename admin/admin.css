@@ -533,16 +533,51 @@ body {
   grid-template-columns: 1fr 1fr 1fr;
 }
 
-.table-category-badge {
-  display: inline-block;
+.category-checkboxes-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.category-check-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background-color: #F1F5F9;
-  color: #334155;
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 9999px;
-  text-transform: capitalize;
   border: 1px solid #CBD5E1;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.category-check-item:hover {
+  background-color: #E2E8F0;
+  border-color: #94A3B8;
+}
+
+.category-check-item input[type="checkbox"] {
+  accent-color: var(--primary);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.category-check-item:has(input:checked) {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #FFFFFF;
+}
+
+.category-chips-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
 .form-group {

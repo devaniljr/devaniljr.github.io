@@ -4,7 +4,7 @@
     "nome": "O Programador Pragmático: De Aprendiz a Mestre",
     "autor": "David Thomas & Andrew Hunt",
     "valor": 68,
-    "categoria": "especiais",
+    "categorias": ["especiais", "programação"],
     "estado": "Seminovo - Excelente",
     "descricao": "Edição comemorativa de 20 anos revisada. Livro clássico com lições atemporais sobre desenvolvimento de software, postura profissional e boas práticas.",
     "imagens": {
@@ -31,7 +31,7 @@
     "nome": "Código Limpo: Habilidades Práticas do Agile Software",
     "autor": "Robert C. Martin (Uncle Bob)",
     "valor": 75,
-    "categoria": "programação",
+    "categorias": ["especiais", "programação"],
     "estado": "Usado - Ótimo estado",
     "descricao": "Manual de boas práticas para escrever código legível, manutenível e de alta qualidade. Leitura essencial para todo desenvolvedor.",
     "imagens": {
@@ -58,7 +58,7 @@
     "nome": "Entendendo Algoritmos: Um Guia Ilustrado",
     "autor": "Aditya Y. Bhargava",
     "valor": 52,
-    "categoria": "programação",
+    "categorias": ["programação"],
     "estado": "Como Novo",
     "descricao": "O livro mais didático e visual para aprender estruturas de dados e algoritmos (busca binária, grafos, Dijkstra, programação dinâmica).",
     "imagens": {
@@ -85,7 +85,7 @@
     "nome": "Refatoração: Aperfeiçoando o Projeto de Código Existente",
     "autor": "Martin Fowler",
     "valor": 84,
-    "categoria": "programação",
+    "categorias": ["programação"],
     "estado": "Seminovo",
     "descricao": "2ª Edição com exemplos em JavaScript. Um catálogo prático de técnicas para melhorar o design e arquitetura do código passo a passo.",
     "imagens": {
@@ -108,7 +108,7 @@
     "nome": "Meditações",
     "autor": "Marco Aurélio",
     "valor": 45,
-    "categoria": "filosofia",
+    "categorias": ["filosofia", "especiais"],
     "estado": "Seminovo - Excelente",
     "descricao": "Os pensamentos e reflexões íntimas do imperador filósofo sobre estoicismo, resiliência, disciplina e calma perante as adversidades.",
     "imagens": {
@@ -131,7 +131,7 @@
     "nome": "O Mundo Assombrado pelos Demônios",
     "autor": "Carl Sagan",
     "valor": 58,
-    "categoria": "ciência",
+    "categorias": ["ciência", "filosofia"],
     "estado": "Usado - Ótimo estado",
     "descricao": "A ciência como uma vela no escuro. Uma das obras mais influentes sobre pensamento crítico, ceticismo e método científico.",
     "imagens": {
@@ -154,7 +154,7 @@
     "nome": "English Grammar in Use",
     "autor": "Raymond Murphy",
     "valor": 70,
-    "categoria": "inglês",
+    "categorias": ["inglês", "concursos"],
     "estado": "Seminovo",
     "descricao": "A gramática de referência mais famosa do mundo para estudantes de inglês intermediário (B1-B2), com explicações claras e exercícios práticos.",
     "imagens": {
@@ -177,7 +177,7 @@
     "nome": "Gramática de Uso del Español",
     "autor": "Luis Aragonés & Ramón Palencia",
     "valor": 65,
-    "categoria": "espanhol",
+    "categorias": ["espanhol", "concursos"],
     "estado": "Usado - Muito bom",
     "descricao": "Teoria e prática ilustradas para dominar o espanhol com facilidade. Ideal para estudos autodidatas ou complementares.",
     "imagens": {
@@ -200,7 +200,7 @@
     "nome": "Direito Constitucional Descomplicado",
     "autor": "Vicente Paulo & Marcelo Alexandrino",
     "valor": 80,
-    "categoria": "concursos",
+    "categorias": ["concursos"],
     "estado": "Seminovo",
     "descricao": "Manual completo e didático de Direito Constitucional voltado para preparação de alto nível em concursos públicos federais e estaduais.",
     "imagens": {
@@ -223,7 +223,7 @@
     "nome": "Domain-Driven Design: Atacando as Complexidades no Coração do Software",
     "autor": "Eric Evans",
     "valor": 89,
-    "categoria": "programação",
+    "categorias": ["programação", "especiais"],
     "estado": "Usado",
     "descricao": "O famoso Livro Azul do DDD. Aborda modelagem estratégica e tática orientada ao domínio do negócio.",
     "imagens": {

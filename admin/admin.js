@@ -1,6 +1,6 @@
 /**
  * Lojinha do Dev - Painel Administrativo Local
- * Gerenciamento do arquivo produtos.json, categorias e upload de fotos.
+ * Gerenciamento do arquivo produtos.json, múltiplas categorias e upload de fotos.
  */
 
 const API = {
@@ -43,7 +43,6 @@ const DOM = {
   bookId: document.getElementById('bookId'),
   bookNome: document.getElementById('bookNome'),
   bookAutor: document.getElementById('bookAutor'),
-  bookCategoria: document.getElementById('bookCategoria'),
   bookValor: document.getElementById('bookValor'),
   bookEstado: document.getElementById('bookEstado'),
   bookDescricao: document.getElementById('bookDescricao'),
@@ -74,6 +73,19 @@ const DOM = {
 function formatBRL(value) {
   const num = Number(value) || 0;
   return num.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
+// Extrai array de categorias
+function getBookCategories(book) {
+  if (Array.isArray(book.categorias)) return book.categorias;
+  if (Array.isArray(book.categoria)) return book.categoria;
+  if (typeof book.categorias === 'string' && book.categorias.trim()) {
+    return book.categorias.split(',').map(c => c.trim());
+  }
+  if (typeof book.categoria === 'string' && book.categoria.trim()) {
+    return book.categoria.split(',').map(c => c.trim());
+  }
+  return [];
 }
 
 // Inicialização
@@ -141,8 +153,8 @@ function renderTable() {
     if (query) {
       const title = (book.nome || '').toLowerCase();
       const author = (book.autor || '').toLowerCase();
-      const cat = (book.categoria || '').toLowerCase();
-      if (!title.includes(query) && !author.includes(query) && !cat.includes(query)) return false;
+      const catsString = getBookCategories(book).join(' ').toLowerCase();
+      if (!title.includes(query) && !author.includes(query) && !catsString.includes(query)) return false;
     }
 
     return true;
@@ -164,7 +176,11 @@ function renderTable() {
     const coverUrl = (book.imagens && book.imagens.frente) ? book.imagens.frente : '/images/placeholder-book.svg';
     const author = book.autor || 'Autor não informado';
     const condition = book.estado || 'Seminovo';
-    const category = book.categoria || 'Geral';
+    const cats = getBookCategories(book);
+
+    const categoriesHtml = cats.length > 0 
+      ? cats.map(c => `<span class="category-check-item" style="padding: 2px 8px; font-size: 0.74rem;">${c}</span>`).join('')
+      : '<span style="color:#94A3B8; font-size:0.75rem;">Sem categoria</span>';
 
     return `
       <tr data-id="${book.id}">
@@ -176,7 +192,7 @@ function renderTable() {
           <span class="book-author-cell">${author}</span>
         </td>
         <td>
-          <span class="table-category-badge">${category}</span>
+          <div class="category-chips-list">${categoriesHtml}</div>
         </td>
         <td>
           <span class="book-price-cell">${formatBRL(book.valor)}</span>
@@ -272,16 +288,21 @@ async function saveProductsToServer(successMessage) {
 }
 
 // ==========================================================================
-// 6. Modal de Formulário (Criar / Editar Livro)
+// 6. Modal de Formulário (Criar / Editar Livro com Múltiplas Categorias)
 // ==========================================================================
 function openCreateModal() {
   state.editingBookId = null;
   DOM.modalFormTitle.textContent = 'Cadastrar Novo Livro';
   DOM.bookForm.reset();
   DOM.bookId.value = '';
-  DOM.bookCategoria.value = 'programação';
   DOM.bookVendido.checked = false;
   state.dynamicDetails = [];
+
+  // Reseta categorias (marca programação por padrão)
+  const categoryCheckboxes = document.querySelectorAll('input[name="adminCategorias"]');
+  categoryCheckboxes.forEach(cb => {
+    cb.checked = (cb.value === 'programação');
+  });
 
   // Reseta previews
   ['frente', 'verso', 'lombada1', 'lombada2', 'folhas'].forEach(key => {
@@ -303,11 +324,17 @@ window.openEditModal = function(bookId) {
   DOM.bookId.value = book.id;
   DOM.bookNome.value = book.nome || '';
   DOM.bookAutor.value = book.autor || '';
-  DOM.bookCategoria.value = (book.categoria || 'programação').toLowerCase();
   DOM.bookValor.value = book.valor || '';
   DOM.bookEstado.value = book.estado || 'Seminovo - Excelente';
   DOM.bookDescricao.value = book.descricao || '';
   DOM.bookVendido.checked = (book.vendido === true || book.vendido === 'true');
+
+  // Marca os checkboxes das categorias que o livro possui
+  const bookCats = getBookCategories(book).map(c => c.toLowerCase().trim());
+  const categoryCheckboxes = document.querySelectorAll('input[name="adminCategorias"]');
+  categoryCheckboxes.forEach(cb => {
+    cb.checked = bookCats.includes(cb.value.toLowerCase().trim());
+  });
 
   const imgs = book.imagens || {};
 
@@ -483,7 +510,7 @@ window.handleDetailFileUpload = async function(event, index) {
 });
 
 // ==========================================================================
-// 9. Salvar Formulário do Livro (Submit)
+// 9. Salvar Formulário do Livro (Submit com Múltiplas Categorias)
 // ==========================================================================
 DOM.bookForm.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -491,7 +518,16 @@ DOM.bookForm.addEventListener('submit', async (e) => {
   const id = DOM.bookId.value || `livro-${Date.now()}`;
   const nome = DOM.bookNome.value.trim();
   const autor = DOM.bookAutor.value.trim();
-  const categoria = DOM.bookCategoria.value.trim().toLowerCase();
+
+  // Coleta todas as categorias marcadas
+  const checkedBoxes = Array.from(document.querySelectorAll('input[name="adminCategorias"]:checked'));
+  const categorias = checkedBoxes.map(cb => cb.value.trim().toLowerCase());
+
+  if (categorias.length === 0) {
+    alert('Por favor, selecione ao menos uma categoria para o livro.');
+    return;
+  }
+
   const valor = parseFloat(DOM.bookValor.value) || 0;
   const estado = DOM.bookEstado.value;
   const descricao = DOM.bookDescricao.value.trim();
@@ -515,7 +551,8 @@ DOM.bookForm.addEventListener('submit', async (e) => {
     id,
     nome,
     autor,
-    categoria,
+    categorias,
+    categoria: categorias[0], // compatibilidade retroativa
     valor,
     estado,
     descricao,

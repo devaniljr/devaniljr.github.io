@@ -1,7 +1,7 @@
 /**
  * Lojinha do Dev - Frontend Application
- * Consumo do catálogo, categorias (Especiais, Programação, Filosofia, etc), 
- * galeria de fotos com legendas, Frete Grátis via Registro Módico e WhatsApp.
+ * Consumo do catálogo, categorias múltiplas, galeria de fotos com legendas,
+ * Frete Grátis via Registro Módico e checkout WhatsApp universal.
  */
 
 // Configurações Globais
@@ -24,13 +24,13 @@ const state = {
 // Nomes amigáveis para as categorias no cabeçalho
 const CATEGORY_NAMES = {
   'todos': 'Todos os Livros',
-  'especiais': '⭐ Edições Especiais',
-  'programação': '💻 Livros de Programação',
-  'filosofia': '🏛️ Livros de Filosofia',
-  'ciência': '🔬 Livros de Ciência',
-  'inglês': '🇬🇧 Livros em Inglês & Gramática',
-  'espanhol': '🇪🇸 Livros em Espanhol & Gramática',
-  'concursos': '⚖️ Livros para Concursos Públicos'
+  'especiais': 'Edições Especiais',
+  'programação': 'Livros de Programação',
+  'filosofia': 'Livros de Filosofia',
+  'ciência': 'Livros de Ciência',
+  'inglês': 'Livros em Inglês & Gramática',
+  'espanhol': 'Livros em Espanhol & Gramática',
+  'concursos': 'Livros para Concursos Públicos'
 };
 
 // Elementos do DOM
@@ -102,6 +102,19 @@ function normalizeText(text) {
     .trim();
 }
 
+// Retorna sempre um array de categorias para qualquer livro
+function getBookCategories(book) {
+  if (Array.isArray(book.categorias)) return book.categorias;
+  if (Array.isArray(book.categoria)) return book.categoria;
+  if (typeof book.categorias === 'string' && book.categorias.trim()) {
+    return book.categorias.split(',').map(c => c.trim());
+  }
+  if (typeof book.categoria === 'string' && book.categoria.trim()) {
+    return book.categoria.split(',').map(c => c.trim());
+  }
+  return [];
+}
+
 // ==========================================================================
 // 1. Inicialização
 // ==========================================================================
@@ -140,7 +153,7 @@ async function fetchProducts() {
 }
 
 // ==========================================================================
-// 3. Filtros (Categorias, Busca e Ordenação)
+// 3. Filtros (Múltiplas Categorias, Busca e Ordenação)
 // ==========================================================================
 function applyFiltersAndSort() {
   const query = (DOM.searchInput.value || '').trim().toLowerCase();
@@ -148,11 +161,11 @@ function applyFiltersAndSort() {
   const activeCat = state.currentCategory;
 
   let list = state.allProducts.filter(book => {
-    // 1. Filtro por Categoria
+    // 1. Filtro por Múltiplas Categorias
     if (activeCat !== 'todos') {
-      const bookCat = normalizeText(book.categoria);
+      const bookCats = getBookCategories(book).map(c => normalizeText(c));
       const targetCat = normalizeText(activeCat);
-      if (bookCat !== targetCat) {
+      if (!bookCats.includes(targetCat)) {
         return false;
       }
     }
@@ -162,8 +175,8 @@ function applyFiltersAndSort() {
       const title = (book.nome || '').toLowerCase();
       const author = (book.autor || '').toLowerCase();
       const desc = (book.descricao || '').toLowerCase();
-      const cat = (book.categoria || '').toLowerCase();
-      if (!title.includes(query) && !author.includes(query) && !desc.includes(query) && !cat.includes(query)) {
+      const catsString = getBookCategories(book).join(' ').toLowerCase();
+      if (!title.includes(query) && !author.includes(query) && !desc.includes(query) && !catsString.includes(query)) {
         return false;
       }
     }
@@ -210,14 +223,15 @@ function renderCatalog() {
     const coverUrl = (book.imagens && book.imagens.frente) ? book.imagens.frente : 'images/placeholder-book.svg';
     const condition = book.estado || 'Seminovo';
     const author = book.autor || 'Autor não informado';
-    const category = book.categoria || 'Geral';
+    const cats = getBookCategories(book);
+    const categoryLabel = cats.length > 0 ? cats[0] : 'Geral';
 
     return `
       <article class="book-card" data-id="${book.id}">
         <div class="book-card__cover-wrap" onclick="openBookModal('${book.id}')">
           <div class="book-card__badges-overlay">
             <span class="book-card__shipping-badge">🚚 Frete Grátis</span>
-            <span class="book-card__category-badge">${category}</span>
+            <span class="book-card__category-badge">${categoryLabel}</span>
           </div>
 
           <img 
@@ -274,7 +288,15 @@ window.openBookModal = function(bookId) {
   DOM.modalBookAuthor.textContent = book.autor ? `Por ${book.autor}` : '';
   DOM.modalBookPrice.textContent = formatBRL(book.valor);
   DOM.modalBookCondition.textContent = book.estado || 'Exemplar físico';
-  DOM.modalBookCategory.textContent = book.categoria ? `Categoria: ${book.categoria}` : 'Livro';
+
+  // Exibe todas as categorias do livro no modal
+  const cats = getBookCategories(book);
+  if (cats.length > 0) {
+    DOM.modalBookCategory.innerHTML = cats.map(c => `<span class="category-chip-tag">${c}</span>`).join(' ');
+  } else {
+    DOM.modalBookCategory.textContent = 'Livro';
+  }
+
   DOM.modalBookDescription.textContent = book.descricao || 'Exemplar em bom estado físico para pronta entrega.';
 
   // Monta lista de fotos e ângulos disponíveis
@@ -424,7 +446,7 @@ window.handleAddToCart = function(bookId) {
 
   state.cart.push(cartItem);
   saveCartToStorage();
-  showToast(`"${book.nome}" adicionado à sacola com Frete Grátis! 📖`);
+  showToast(`"${book.nome}" adicionado à sacola com Frete Grátis!`);
 };
 
 window.removeFromCart = function(bookId) {
@@ -488,7 +510,7 @@ function closeCartDrawer() {
 }
 
 // ==========================================================================
-// 7. Integração e Checkout via WhatsApp com Frete Grátis
+// 7. Integração e Checkout via WhatsApp (Formatado com caracteres universais)
 // ==========================================================================
 
 // Compra direta de 1 único livro
@@ -496,14 +518,17 @@ function buySingleBookViaWhatsApp(book) {
   const bookName = book.nome || 'Livro';
   const price = formatBRL(book.valor);
 
+  // Usamos formatação padrão com travessão e marcadores que nunca falham no WhatsApp
   const message = [
-    `☕ *Olá! Gostaria de comprar um livro na Lojinha do Dev:*`,
+    `*Lojinha do Dev - Pedido*`,
     ``,
-    `📖 *Livro:* ${bookName}`,
-    `💰 *Valor:* ${price}`,
-    `🚚 *Frete:* GRÁTIS (Registro Módico Correios)`,
+    `Ola! Gostaria de comprar o seguinte livro:`,
     ``,
-    `O exemplar ainda está disponível? Como combinamos o pagamento e o envio?`
+    `- Livro: *${bookName}*`,
+    `- Valor: ${price}`,
+    `- Frete: GRATIS (Registro Modico Correios)`,
+    ``,
+    `O exemplar ainda esta disponivel? Como combinamos o pagamento e o envio?`
   ].join('\n');
 
   sendWhatsAppMessage(message);
@@ -519,28 +544,30 @@ function checkoutCartViaWhatsApp() {
   const customerAddress = (DOM.customerAddressInput.value || '').trim();
 
   const lines = [
-    `☕ *Olá! Gostaria de fazer um pedido na Lojinha do Dev:*`,
+    `*Lojinha do Dev - Pedido*`,
     ``,
-    `📚 *Itens Escolhidos (${state.cart.length}):*`
+    `Ola! Gostaria de fazer o pedido dos seguintes livros:`,
+    ``,
+    `[Itens Escolhidos (${state.cart.length})]:`
   ];
 
   state.cart.forEach((item, index) => {
-    lines.push(`${index + 1}. *${item.nome}* — ${formatBRL(item.valor)}`);
+    lines.push(`${index + 1}. *${item.nome}* - ${formatBRL(item.valor)}`);
   });
 
   lines.push(``);
-  lines.push(`💰 *Total dos Livros:* ${totalFormatted}`);
-  lines.push(`🚚 *Frete:* GRÁTIS (Registro Módico Correios)`);
+  lines.push(`- *Total dos Livros:* ${totalFormatted}`);
+  lines.push(`- *Frete:* GRATIS (Registro Modico Correios)`);
 
   if (customerName) {
-    lines.push(`👤 *Meu Nome:* ${customerName}`);
+    lines.push(`- *Meu Nome:* ${customerName}`);
   }
   if (customerAddress) {
-    lines.push(`📍 *Endereço / CEP de Envio:* ${customerAddress}`);
+    lines.push(`- *Endereco / CEP de Envio:* ${customerAddress}`);
   }
 
   lines.push(``);
-  lines.push(`Os exemplares ainda estão disponíveis? Como combinamos o pagamento e o envio gratuito?`);
+  lines.push(`Os livros ainda estao disponiveis? Como podemos combinar o pagamento e o envio gratuito?`);
 
   sendWhatsAppMessage(lines.join('\n'));
 }
@@ -557,7 +584,7 @@ function sendWhatsAppMessage(text) {
 function showToast(message) {
   const toast = document.createElement('div');
   toast.className = 'toast';
-  toast.innerHTML = `<span>✨</span> <span>${message}</span>`;
+  toast.innerHTML = `<span>✓</span> <span>${message}</span>`;
 
   DOM.toastContainer.appendChild(toast);
 
