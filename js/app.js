@@ -27,8 +27,7 @@ const CATEGORY_NAMES = {
   'programação': '💻 Livros de Programação',
   'filosofia': '🏛️ Livros de Filosofia',
   'ciência': '🔬 Livros de Ciência',
-  'inglês': '🇬🇧 Livros em Inglês & Gramática',
-  'espanhol': '🇪🇸 Livros em Espanhol & Gramática',
+  'ficção': '📖 Livros de Ficção',
   'concursos': '⚖️ Livros para Concursos Públicos'
 };
 
