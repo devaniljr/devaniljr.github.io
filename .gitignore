@@ -13,5 +13,5 @@ npm-debug.log*
 
 # Caso você queira ignorar o painel admin até mesmo no seu repositório Git pessoal,
 # descomente as duas linhas abaixo:
-# admin/
-# server.js
+admin/
+server.js
