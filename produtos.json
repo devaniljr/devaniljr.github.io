@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "id": "livro-1794258297434",
+    "nome": "O Programador Pragmático: De Aprendiz a Mestre",
+    "autor": "",
+    "categorias": [
+      "programação"
+    ],
+    "categoria": "programação",
+    "valor": 65,
+    "estado": "Seminovo - Excelente",
+    "descricao": "teste",
+    "imagens": {
+      "frente": "images/produtos/1794258292695-avatar-2.jpeg",
+      "verso": "",
+      "lombada1": "",
+      "lombada2": "",
+      "folhas": "",
+      "detalhes": []
+    },
+    "vendido": false
+  }
+]
