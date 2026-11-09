@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "id": "livro-1794260855712",
+    "nome": "Uma Nova História da Filosofia Ocidental - Volume I - Filosofia Antiga",
+    "autor": "Anthony Kenny",
+    "categorias": [
+      "filosofia"
+    ],
+    "categoria": "filosofia",
+    "valor": 0,
+    "estado": "Como Novo",
+    "descricao": "Esta é a notável história do nascimento da filosofia, de seu florescimento na Antiguidade do Mediterrâneo e da evolução das ideias que moldaram o curso do pensamento e da sociedade ocidentais.",
+    "imagens": {
+      "frente": "images/produtos/1794260824519-image.jpg",
+      "verso": "",
+      "lombada1": "",
+      "lombada2": "",
+      "folhas": "",
+      "detalhes": []
+    },
+    "vendido": false
+  }
+]
