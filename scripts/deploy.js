@@ -1,6 +1,7 @@
 /**
  * Script de Deploy para GitHub Pages
- * Publica APENAS os arquivos públicos da loja, ignorando totalmente a pasta admin/ e o server.js
+ * Publica os arquivos públicos da loja + o painel admin.
+ * O server.js (backend local) é excluído — não faz sentido no GitHub Pages.
  */
 
 const ghpages = require('gh-pages');
@@ -45,16 +46,20 @@ copyFolderRecursive(path.join(ROOT_DIR, 'css'), path.join(DIST_DIR, 'css'));
 copyFolderRecursive(path.join(ROOT_DIR, 'js'), path.join(DIST_DIR, 'js'));
 copyFolderRecursive(path.join(ROOT_DIR, 'images'), path.join(DIST_DIR, 'images'));
 
-// 3. Cria arquivo .nojekyll para o GitHub Pages não ignorar arquivos
+// 3. Copia o painel admin (com login.html de autenticação)
+copyFolderRecursive(path.join(ROOT_DIR, 'admin'), path.join(DIST_DIR, 'admin'));
+
+// 4. Cria arquivo .nojekyll para o GitHub Pages não ignorar arquivos
 fs.writeFileSync(path.join(DIST_DIR, '.nojekyll'), '');
 
-console.log('✅ Arquivos públicos copiados com sucesso:');
+console.log('✅ Arquivos copiados para deploy:');
 console.log('   - index.html');
 console.log('   - produtos.json');
 console.log('   - css/');
 console.log('   - js/');
 console.log('   - images/');
-console.log('🔒 admin/, server.js e node_modules foram EXCLUÍDOS do pacote de deploy.');
+console.log('   - admin/  ✅ (painel com autenticação)');
+console.log('🔒 server.js e node_modules foram EXCLUÍDOS do pacote de deploy.');
 
 console.log('\n🚀 Iniciando publicação no GitHub Pages (branch gh-pages)...');
 
@@ -72,6 +77,6 @@ ghpages.publish(DIST_DIR, {
     process.exit(1);
   } else {
     console.log('🎉 Deploy concluído com sucesso no branch gh-pages!');
-    console.log('👉 Acesse seu repositório no GitHub > Settings > Pages e selecione a branch "gh-pages" para publicar.');
+    console.log('👉 Acesse: https://devaniljr.github.io/admin/login.html');
   }
 });

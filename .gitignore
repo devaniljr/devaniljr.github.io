@@ -11,7 +11,5 @@ _site/
 *.log
 npm-debug.log*
 
-# Caso você queira ignorar o painel admin até mesmo no seu repositório Git pessoal,
-# descomente as duas linhas abaixo:
-admin/
+# server.js é só local, não vai pro GitHub Pages
 server.js
