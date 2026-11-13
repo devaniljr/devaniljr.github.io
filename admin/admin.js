@@ -159,6 +159,20 @@ function getBookCategories(book) {
   return [];
 }
 
+// Resolve caminho relativo de imagens para funcionar dentro do subdiretório /admin/
+function resolveImgUrl(url) {
+  if (!url || typeof url !== 'string' || !url.trim()) return '../images/placeholder-book.svg';
+  const trimmed = url.trim();
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('data:') || trimmed.startsWith('blob:')) {
+    return trimmed;
+  }
+  if (trimmed.startsWith('../')) {
+    return trimmed;
+  }
+  const clean = trimmed.startsWith('/') ? trimmed.slice(1) : trimmed;
+  return `../${clean}`;
+}
+
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
   loadProducts();
@@ -245,7 +259,7 @@ function renderTable() {
 
   DOM.booksTableBody.innerHTML = filtered.map(book => {
     const isSold = book.vendido === true || book.vendido === 'true';
-    const coverUrl = (book.imagens && book.imagens.frente) ? book.imagens.frente : '/images/placeholder-book.svg';
+    const coverUrl = (book.imagens && book.imagens.frente) ? resolveImgUrl(book.imagens.frente) : '../images/placeholder-book.svg';
     const author = book.autor || 'Autor não informado';
     const condition = book.estado || 'Seminovo';
     const cats = getBookCategories(book);
@@ -257,7 +271,7 @@ function renderTable() {
     return `
       <tr data-id="${book.id}">
         <td>
-          <img src="${coverUrl}" alt="Capa" class="table-cover-thumb" onerror="this.src='/images/placeholder-book.svg'">
+          <img src="${coverUrl}" alt="Capa" class="table-cover-thumb" onerror="this.src='../images/placeholder-book.svg'">
         </td>
         <td>
           <span class="book-title-cell">${book.nome}</span>
@@ -394,7 +408,7 @@ function openCreateModal() {
   // Reseta previews
   ['frente', 'verso', 'lombada1', 'lombada2', 'folhas'].forEach(key => {
     DOM[`img_${key}`].value = '';
-    DOM[`prev_${key}`].src = '/images/placeholder-book.svg';
+    DOM[`prev_${key}`].src = '../images/placeholder-book.svg';
   });
 
   renderDetailsList();
@@ -428,7 +442,7 @@ window.openEditModal = function(bookId) {
   ['frente', 'verso', 'lombada1', 'lombada2', 'folhas'].forEach(key => {
     const val = imgs[key] || '';
     DOM[`img_${key}`].value = val;
-    DOM[`prev_${key}`].src = val || '/images/placeholder-book.svg';
+    DOM[`prev_${key}`].src = resolveImgUrl(val);
   });
 
   // Detalhes dinâmicos
@@ -464,12 +478,12 @@ function renderDetailsList() {
   }
 
   DOM.detailsListContainer.innerHTML = state.dynamicDetails.map((det, index) => {
-    const previewUrl = det.url || '/images/placeholder-book.svg';
+    const previewUrl = resolveImgUrl(det.url);
     const caption = det.legenda || '';
 
     return `
       <div class="detail-row-card" data-index="${index}">
-        <img src="${previewUrl}" alt="Detalhe ${index + 1}" class="detail-thumb-preview" id="det_prev_${index}" onerror="this.src='/images/placeholder-book.svg'">
+        <img src="${previewUrl}" alt="Detalhe ${index + 1}" class="detail-thumb-preview" id="det_prev_${index}" onerror="this.src='../images/placeholder-book.svg'">
         
         <div class="detail-fields">
           <div style="display: flex; gap: 8px; align-items: center;">
@@ -517,7 +531,7 @@ window.handleDetailUrlChange = function(index, value) {
   if (state.dynamicDetails[index]) {
     state.dynamicDetails[index].url = value;
     const imgElem = document.getElementById(`det_prev_${index}`);
-    if (imgElem) imgElem.src = value || '/images/placeholder-book.svg';
+    if (imgElem) imgElem.src = resolveImgUrl(value);
   }
 };
 
@@ -563,11 +577,13 @@ window.handleFileUpload = async function(event, key) {
   const file = event.target.files && event.target.files[0];
   if (!file) return;
 
+  // Mostra o preview local instantaneamente
+  DOM[`prev_${key}`].src = URL.createObjectURL(file);
+
   try {
     showToast(`⏳ Enviando foto para o GitHub...`);
     const url = await uploadImageToGitHub(file);
     DOM[`img_${key}`].value = url;
-    DOM[`prev_${key}`].src = url;
     showToast(`✅ Foto enviada: ${url}`);
   } catch (err) {
     console.error('Erro no upload:', err);
@@ -579,11 +595,15 @@ window.handleDetailFileUpload = async function(event, index) {
   const file = event.target.files && event.target.files[0];
   if (!file) return;
 
+  // Mostra o preview local instantaneamente
+  const localPreview = URL.createObjectURL(file);
+  const imgElem = document.getElementById(`det_prev_${index}`);
+  if (imgElem) imgElem.src = localPreview;
+
   try {
     showToast(`⏳ Enviando foto de detalhe...`);
     const url = await uploadImageToGitHub(file);
     state.dynamicDetails[index].url = url;
-    renderDetailsList();
     showToast(`✅ Foto de detalhe enviada!`);
   } catch (err) {
     console.error('Erro no upload de detalhe:', err);
@@ -596,7 +616,7 @@ window.handleDetailFileUpload = async function(event, index) {
   const prev = DOM[`prev_${key}`];
   if (input && prev) {
     input.addEventListener('input', () => {
-      prev.src = input.value.trim() || '/images/placeholder-book.svg';
+      prev.src = resolveImgUrl(input.value.trim());
     });
   }
 });
