@@ -1,5 +1,26 @@
 [
   {
+    "id": "livro-1794693488538",
+    "nome": "Nascidos em tempos líquidos",
+    "autor": "Zygmunt Bauman",
+    "categorias": [
+      "filosofia"
+    ],
+    "categoria": "filosofia",
+    "valor": 35,
+    "estado": "Como Novo",
+    "descricao": "Uma reflexão sobre as gerações surgidas na sociedade líquida e em constante mudança Pouco antes de falecer, aos 91 anos, Zygmunt Bauman trocava intensa correspondência com um jovem jornalista italiano.",
+    "imagens": {
+      "frente": "images/produtos/1794693328758-d3f1e651-8a01-4e85-83b9-52ba574bfe9f-2026-11-13-a-s-15.34.39.jpeg",
+      "verso": "images/produtos/1794693463760-4e4b4f96-0201-4efa-b05c-9fda8bb1cfef-2026-11-13-a-s-15.34.49.jpeg",
+      "lombada1": "",
+      "lombada2": "",
+      "folhas": "images/produtos/1794693481826-5c6a2da8-8a5a-4558-b384-78e933e3b951-2026-11-13-a-s-15.35.03.jpeg",
+      "detalhes": []
+    },
+    "vendido": false
+  },
+  {
     "id": "livro-1794260855712",
     "nome": "Uma Nova História da Filosofia Ocidental - Volume I - Filosofia Antiga",
     "autor": "Anthony Kenny",
