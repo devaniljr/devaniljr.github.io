@@ -1,5 +1,26 @@
 [
   {
+    "id": "livro-1794693623323",
+    "nome": "Neurocomic",
+    "autor": "Hana Ros",
+    "categorias": [
+      "ciência"
+    ],
+    "categoria": "ciência",
+    "valor": 80,
+    "estado": "Como Novo",
+    "descricao": "Neurocomic (publicado no Brasil como Neurocomic: A Caverna das Memórias) é uma história em quadrinhos (graphic novel) que explica o funcionamento do cérebro humano de forma lúdica e acessível",
+    "imagens": {
+      "frente": "images/produtos/1794693514200-1880fc6f-2fb1-4312-9f81-a1d9fbac9637-2026-11-13-a-s-15.38.31.jpeg",
+      "verso": "",
+      "lombada1": "",
+      "lombada2": "",
+      "folhas": "",
+      "detalhes": []
+    },
+    "vendido": false
+  },
+  {
     "id": "livro-1794693488538",
     "nome": "Nascidos em tempos líquidos",
     "autor": "Zygmunt Bauman",
