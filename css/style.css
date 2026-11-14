@@ -1273,8 +1273,27 @@ button, input, select {
 .footer-brand-desc {
   font-size: 0.88rem;
   color: #B0A296;
-  max-width: 400px;
-  line-height: 1.6;
+  max-width: 540px;
+  line-height: 1.65;
+}
+
+.footer-instagram-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: #F5D2A6;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.footer-instagram-link:hover {
+  color: #FFFFFF;
+  text-decoration: underline;
+}
+
+.footer-instagram-link svg {
+  vertical-align: -2px;
 }
 
 .footer-contact h4 {
