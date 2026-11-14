@@ -1,5 +1,27 @@
 [
   {
+    "id": "livro-1794694164401",
+    "nome": "Deus: uma história humana",
+    "autor": "Reza Aslan",
+    "categorias": [
+      "filosofia",
+      "ciência"
+    ],
+    "categoria": "filosofia",
+    "valor": 45,
+    "estado": "Seminovo - Excelente",
+    "descricao": "O aclamado escritor e estudioso de religião Reza Aslan desafia o ponto de vista dominante a respeito da nossa relação com o mundo espiritual. Com um texto claro, envolvente e desafiador, ele faz aqui um relato sobre o modo como o conceito de Deus se desenvolveu ao longo da história – das pinturas ancestrais nas cavernas até os dias de hoje.",
+    "imagens": {
+      "frente": "images/produtos/1794694043914-ae807f69-ffcf-41f7-9877-50b6a8443e49-2026-11-13-a-s-15.41.51.jpeg",
+      "verso": "images/produtos/1794694053834-daa1064f-cf6f-4585-9996-eb38beb75fb6-2026-11-13-a-s-15.42.00.jpeg",
+      "lombada1": "",
+      "lombada2": "",
+      "folhas": "images/produtos/1794694066050-162ad631-f3d1-444c-ae92-03e7129d2f0d-2026-11-13-a-s-15.42.29.jpeg",
+      "detalhes": []
+    },
+    "vendido": false
+  },
+  {
     "id": "livro-1794694014799",
     "nome": "O básico da filosofia",
     "autor": "Nigel Warburton",
