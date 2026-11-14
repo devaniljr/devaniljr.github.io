@@ -1,5 +1,26 @@
 [
   {
+    "id": "livro-1794693855739",
+    "nome": "O romance da ciência",
+    "autor": "Carl Sagan",
+    "categorias": [
+      "ciência"
+    ],
+    "categoria": "ciência",
+    "valor": 30,
+    "estado": "Usado - Marcas leves de leitura",
+    "descricao": "Livro com necessidade de restauração. Edição antiga.",
+    "imagens": {
+      "frente": "images/produtos/1794693696165-d961c54e-702c-4cd8-bf33-199ae8cc2f41-2026-11-13-a-s-15.39.58.jpeg",
+      "verso": "images/produtos/1794693710165-a54da53b-fccb-4c4e-8658-0718b6e6e88c-2026-11-13-a-s-15.40.08.jpeg",
+      "lombada1": "",
+      "lombada2": "",
+      "folhas": "images/produtos/1794693723841-8ac2959f-e479-408a-99b3-7c741b92c4f0-2026-11-13-a-s-15.40.27.jpeg",
+      "detalhes": []
+    },
+    "vendido": false
+  },
+  {
     "id": "livro-1794693623323",
     "nome": "Neurocomic",
     "autor": "Hana Ros",
