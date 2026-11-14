@@ -1,5 +1,26 @@
 [
   {
+    "id": "livro-1794694014799",
+    "nome": "O básico da filosofia",
+    "autor": "Nigel Warburton",
+    "categorias": [
+      "filosofia"
+    ],
+    "categoria": "filosofia",
+    "valor": 30,
+    "estado": "Como Novo",
+    "descricao": "Questões que nos fazem refletir são discutidas, nesta obra, a partir do pensamento construído ao longo dos séculos pelos filósofos: as várias respostas que vêm sendo dadas a essas questões, os argumentos usados ao longo da história e, ainda, as críticas a esses argumentos.",
+    "imagens": {
+      "frente": "images/produtos/1794693874218-21fa7d0e-e029-4c13-922c-478633ae3624-2026-11-13-a-s-15.41.05.jpeg",
+      "verso": "images/produtos/1794693988836-1e96cabc-eb87-4999-adda-be955b9ca025-2026-11-13-a-s-15.41.21.jpeg",
+      "lombada1": "images/produtos/1794694002500-5bf8b275-0286-41e6-bd2f-2b8ebee61369-2026-11-13-a-s-15.41.28.jpeg",
+      "lombada2": "",
+      "folhas": "",
+      "detalhes": []
+    },
+    "vendido": false
+  },
+  {
     "id": "livro-1794693855739",
     "nome": "O romance da ciência",
     "autor": "Carl Sagan",
