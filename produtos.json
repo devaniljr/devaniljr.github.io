@@ -1,5 +1,27 @@
 [
   {
+    "id": "livro-1794694504544",
+    "nome": "A Era das Revoluções: 1789-1848",
+    "autor": "Eric Hobsbawm",
+    "categorias": [
+      "filosofia",
+      "ciência"
+    ],
+    "categoria": "filosofia",
+    "valor": 50,
+    "estado": "Usado - Ótimo estado",
+    "descricao": "Primeiro volume da clássica trilogia do historiador Eric Hobsbawm sobre o mundo moderno. A obra analisa como a \"dupla revolução\" — a Revolução Francesa e a Revolução Industrial inglesa — transformou a política, a economia e a sociedade entre 1789 e 1848, consolidando o capitalismo e a sociedade burguesa.",
+    "imagens": {
+      "frente": "images/produtos/1794694342730-a7767b3b-1e5d-49ee-a1d8-82777946d4f5-2026-11-13-a-s-15.44.18.jpeg",
+      "verso": "images/produtos/1794694351518-4fd2628e-3945-4d66-af98-bf2e9e6fcdb9-2026-11-13-a-s-15.44.28.jpeg",
+      "lombada1": "images/produtos/1794694360561-5cb1bd22-2864-45a9-942b-945e7c2e38b6-2026-11-13-a-s-15.44.53.jpeg",
+      "lombada2": "",
+      "folhas": "images/produtos/1794694373629-8156abf6-b7cb-4692-a801-28b0dc464a89-2026-11-13-a-s-15.45.21.jpeg",
+      "detalhes": []
+    },
+    "vendido": false
+  },
+  {
     "id": "livro-1794694320625",
     "nome": "História da felicidade",
     "autor": "Peter N. Stearns",
