@@ -1,5 +1,26 @@
 [
   {
+    "id": "livro-1794694688731",
+    "nome": "The Blackwell Companion to Philosophy",
+    "autor": "Nicholas Bunnin e E. P. Tsui-James",
+    "categorias": [
+      "filosofia"
+    ],
+    "categoria": "filosofia",
+    "valor": 150,
+    "estado": "Seminovo - Excelente",
+    "descricao": "",
+    "imagens": {
+      "frente": "images/produtos/1794694612553-e3d08f37-724d-4eed-b374-2fa3c68b2edf-2026-11-13-a-s-15.47.25.jpeg",
+      "verso": "images/produtos/1794694621992-fb2ae017-d6dd-4ee8-8970-0255dfb76f51-2026-11-13-a-s-15.48.28.jpeg",
+      "lombada1": "",
+      "lombada2": "",
+      "folhas": "images/produtos/1794694632953-b67b6bc7-54e1-418d-ae63-428e5b379cc6-2026-11-13-a-s-15.48.42.jpeg",
+      "detalhes": []
+    },
+    "vendido": false
+  },
+  {
     "id": "livro-1794694596417",
     "nome": "Vigiar e Punir: Nascimento da Pris",
     "autor": "Michel Foucault",
