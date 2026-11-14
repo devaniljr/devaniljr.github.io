@@ -1,5 +1,26 @@
 [
   {
+    "id": "livro-1794694805750",
+    "nome": "Sapiens: Uma Breve História da Humanidade",
+    "autor": "Yuval Noah Harari",
+    "categorias": [
+      "ciência"
+    ],
+    "categoria": "ciência",
+    "valor": 40,
+    "estado": "Como Novo",
+    "descricao": "O historiador Yuval Noah Harari percorre a trajetória da humanidade desde a Idade da Pedra até o século XXI. A obra mostra como as revoluções Cognitiva, Agrícola e Científica permitiram que o Homo sapiens dominasse o planeta, analisando de forma provocadora a criação de mitos coletivos como dinheiro, religiões, impérios e capitalismo.",
+    "imagens": {
+      "frente": "images/produtos/1794694732712-41f26345-ae7f-45e7-85d7-f8e51e2e01ff-2026-11-13-a-s-15.49.00.jpeg",
+      "verso": "images/produtos/1794694741598-a8eac859-f8b3-486a-a753-455747293b86-2026-11-13-a-s-15.49.07.jpeg",
+      "lombada1": "",
+      "lombada2": "",
+      "folhas": "images/produtos/1794694750208-90adbfef-57f7-4aa9-9c71-04fdb292ca4a-2026-11-13-a-s-15.49.17.jpeg",
+      "detalhes": []
+    },
+    "vendido": false
+  },
+  {
     "id": "livro-1794694688731",
     "nome": "The Blackwell Companion to Philosophy",
     "autor": "Nicholas Bunnin e E. P. Tsui-James",
