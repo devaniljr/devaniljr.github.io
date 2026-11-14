@@ -1,5 +1,27 @@
 [
   {
+    "id": "livro-1794694320625",
+    "nome": "História da felicidade",
+    "autor": "Peter N. Stearns",
+    "categorias": [
+      "filosofia",
+      "ciência"
+    ],
+    "categoria": "filosofia",
+    "valor": 40,
+    "estado": "Como Novo",
+    "descricao": "Ser feliz é algo diferente para cada pessoa, mas também tem sido diferente ao longo da história, em diversas regiões do planeta. Sempre houve a busca por existências felizes, mas o que é considerado felicidade e a forma como as pessoas conseguem configurar suas experiências variam muito e dependem de circunstâncias históricas específicas.",
+    "imagens": {
+      "frente": "images/produtos/1794694198922-8c2cc974-2e9a-4053-83cb-2b751c5423a6-2026-11-13-a-s-15.43.07.jpeg",
+      "verso": "images/produtos/1794694207670-29d22d65-a9de-4c53-8b34-b16c8ad0cf8c-2026-11-13-a-s-15.43.37.jpeg",
+      "lombada1": "",
+      "lombada2": "",
+      "folhas": "images/produtos/1794694223048-0b713247-8ec8-4d24-b575-4a32f8d99d19-2026-11-13-a-s-15.43.48.jpeg",
+      "detalhes": []
+    },
+    "vendido": false
+  },
+  {
     "id": "livro-1794694164401",
     "nome": "Deus: uma história humana",
     "autor": "Reza Aslan",
