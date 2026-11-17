@@ -7,7 +7,9 @@
 const CONFIG = {
   WHATSAPP_NUMBER: '5569993306972',
   STORAGE_CART_KEY: 'lojinha_dev_cart_v1',
-  DATA_URL: './produtos.json'
+  STORAGE_CIDADE_KEY: 'lojinha_dev_cidade_v1',
+  DATA_URL: './produtos.json',
+  FRETE_EXTRA_NACIONAL: 10  // R$ a mais para entregas fora de Porto Velho
 };
 
 // Estado da Aplicação
@@ -17,7 +19,8 @@ const state = {
   currentCategory: 'todos',
   cart: [],
   activeModalBook: null,
-  modalAngles: []
+  modalAngles: [],
+  cidade: null  // 'porto-velho' | 'nacional'
 };
 
 // Nomes amigáveis para o cabeçalho
@@ -31,7 +34,24 @@ const CATEGORY_NAMES = {
   'concursos': '⚖️ Livros para Concursos Públicos'
 };
 
+// ==========================================================================
+// Utilitário de Preço por Cidade
+// ==========================================================================
+function getBookPrice(book) {
+  const base = Number(book.valor) || 0;
+  if (state.cidade === 'nacional') return base + CONFIG.FRETE_EXTRA_NACIONAL;
+  return base;  // porto-velho ou ainda não escolheu
+}
+
+function getCidadeLabel() {
+  if (state.cidade === 'porto-velho') return '📍 Porto Velho';
+  if (state.cidade === 'nacional') return '🇧🇷 Outra cidade do Brasil';
+  return '';
+}
+
+// ==========================================================================
 // Elementos do DOM
+// ==========================================================================
 const DOM = {
   productGrid: document.getElementById('productGrid'),
   catalogCount: document.getElementById('catalogCount'),
@@ -74,7 +94,16 @@ const DOM = {
   cartClearBtn: document.getElementById('cartClearBtn'),
   cartStartShoppingBtn: document.getElementById('cartStartShoppingBtn'),
 
-  toastContainer: document.getElementById('toastContainer')
+  toastContainer: document.getElementById('toastContainer'),
+
+  // Modal de Cidade
+  cityModal: document.getElementById('cityModal'),
+  cityBtnPortoVelho: document.getElementById('cityBtnPortoVelho'),
+  cityBtnNacional: document.getElementById('cityBtnNacional'),
+
+  // Chip de cidade no topo
+  cityChip: document.getElementById('cityChip'),
+  cityChipLabel: document.getElementById('cityChipLabel')
 };
 
 // Formatação BRL
@@ -114,8 +143,10 @@ function getBookCategories(book) {
 // ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
   loadCartFromStorage();
+  loadCidadeFromStorage();
   fetchProducts();
   setupEventListeners();
+  setupCityModal();
 });
 
 // ==========================================================================
@@ -236,7 +267,7 @@ function renderCatalog() {
           <p class="book-card__author">${author}</p>
 
           <div class="book-card__footer">
-            <div class="book-card__price">${formatBRL(book.valor)}</div>
+            <div class="book-card__price">${formatBRL(getBookPrice(book))}</div>
 
             <div class="book-card__actions">
               <button class="btn btn-secondary btn-sm" onclick="openBookModal('${book.id}')" title="Ver fotos deste livro">
@@ -264,7 +295,7 @@ window.openBookModal = function(bookId) {
 
   DOM.modalBookTitle.textContent = book.nome;
   DOM.modalBookAuthor.textContent = book.autor ? `Por ${book.autor}` : '';
-  DOM.modalBookPrice.textContent = formatBRL(book.valor);
+  DOM.modalBookPrice.textContent = formatBRL(getBookPrice(book));
   DOM.modalBookCondition.textContent = book.estado || 'Exemplar físico';
   DOM.modalBookDescription.textContent = book.descricao || 'Exemplar bem cuidado, pronto para leitura e pronta entrega.';
 
@@ -390,7 +421,7 @@ window.handleAddToCart = function(bookId) {
     id: book.id,
     nome: book.nome,
     autor: book.autor || '',
-    valor: Number(book.valor) || 0,
+    valor: getBookPrice(book),
     imagem: (book.imagens && book.imagens.frente) ? book.imagens.frente : ''
   });
 
@@ -463,7 +494,12 @@ function closeCartDrawer() {
 // ==========================================================================
 function buySingleBookViaWhatsApp(book) {
   const bookName = book.nome || 'Livro';
-  const price = formatBRL(book.valor);
+  const price = formatBRL(getBookPrice(book));
+  const freteInfo = state.cidade === 'porto-velho'
+    ? 'Frete: GRATIS (entrega em Porto Velho - Registro Modico Correios)'
+    : state.cidade === 'nacional'
+    ? 'Frete: GRATIS para todo o Brasil (Registro Modico Correios) - ja incluso no valor'
+    : 'Frete: GRATIS (Registro Modico Correios)';
 
   const message = [
     `*Lojinha do Dev - Pedido*`,
@@ -472,7 +508,7 @@ function buySingleBookViaWhatsApp(book) {
     ``,
     `- Livro: *${bookName}*`,
     `- Valor: ${price}`,
-    `- Frete: GRATIS (Registro Modico Correios)`,
+    `- ${freteInfo}`,
     ``,
     `O exemplar ainda esta disponivel? Como combinamos o pagamento e o envio?`
   ].join('\n');
@@ -500,7 +536,12 @@ function checkoutCartViaWhatsApp() {
 
   lines.push(``);
   lines.push(`- *Total:* ${totalFormatted}`);
-  lines.push(`- *Frete:* GRATIS (Registro Modico Correios)`);
+  const freteInfo = state.cidade === 'porto-velho'
+    ? 'Frete: GRATIS (entrega em Porto Velho - Registro Modico Correios)'
+    : state.cidade === 'nacional'
+    ? 'Frete: GRATIS para todo o Brasil (Registro Modico Correios) - ja incluso no valor'
+    : 'Frete: GRATIS (Registro Modico Correios)';
+  lines.push(`- *${freteInfo}*`);
   lines.push(``);
   lines.push(`Os livros ainda estao disponiveis? Como combinamos o pagamento e o envio?`);
 
@@ -584,4 +625,78 @@ function setupEventListeners() {
       else if (DOM.cartDrawerBackdrop.classList.contains('is-open')) closeCartDrawer();
     }
   });
+}
+
+// ==========================================================================
+// 10. Seleção de Cidade e Preços Dinâmicos
+// ==========================================================================
+function loadCidadeFromStorage() {
+  try {
+    const saved = localStorage.getItem(CONFIG.STORAGE_CIDADE_KEY);
+    if (saved === 'porto-velho' || saved === 'nacional') {
+      state.cidade = saved;
+    }
+  } catch (e) {
+    state.cidade = null;
+  }
+  updateCidadeUI();
+}
+
+function saveCidade(cidade) {
+  state.cidade = cidade;
+  try {
+    localStorage.setItem(CONFIG.STORAGE_CIDADE_KEY, cidade);
+  } catch (e) {
+    console.error('Erro ao salvar cidade:', e);
+  }
+  updateCidadeUI();
+  applyFiltersAndSort();  // re-renderiza com novos preços
+}
+
+function updateCidadeUI() {
+  if (!DOM.cityChip || !DOM.cityChipLabel) return;
+  if (state.cidade) {
+    DOM.cityChipLabel.textContent = getCidadeLabel();
+    DOM.cityChip.style.display = 'inline-flex';
+  } else {
+    DOM.cityChip.style.display = 'none';
+  }
+}
+
+function setupCityModal() {
+  if (!DOM.cityModal) return;
+
+  // Mostra o modal se cidade ainda não foi escolhida
+  if (!state.cidade) {
+    openCityModal();
+  }
+
+  DOM.cityBtnPortoVelho.addEventListener('click', () => {
+    saveCidade('porto-velho');
+    closeCityModal();
+    showToast('📍 Preços para Porto Velho aplicados!');
+  });
+
+  DOM.cityBtnNacional.addEventListener('click', () => {
+    saveCidade('nacional');
+    closeCityModal();
+    showToast('🇧🇷 Preços para todo o Brasil aplicados!');
+  });
+
+  // Clique no chip abre o modal novamente para trocar
+  if (DOM.cityChip) {
+    DOM.cityChip.addEventListener('click', openCityModal);
+  }
+}
+
+function openCityModal() {
+  if (!DOM.cityModal) return;
+  DOM.cityModal.classList.add('is-open');
+  DOM.cityModal.setAttribute('aria-hidden', 'false');
+}
+
+function closeCityModal() {
+  if (!DOM.cityModal) return;
+  DOM.cityModal.classList.remove('is-open');
+  DOM.cityModal.setAttribute('aria-hidden', 'true');
 }

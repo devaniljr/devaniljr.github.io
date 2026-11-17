@@ -135,6 +135,160 @@ button, input, select {
   text-decoration: underline;
 }
 
+/* Agrupamento lado direito do topo */
+.top-announcement__right {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Chip de cidade selecionada */
+.city-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: var(--radius-pill);
+  color: #FEEBC8;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.city-chip:hover {
+  background: rgba(255,255,255,0.22);
+  color: #FFFFFF;
+}
+
+.city-chip__change {
+  font-size: 0.7rem;
+  font-weight: 400;
+  opacity: 0.75;
+  margin-left: 2px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ==========================================================================
+   Modal de Seleção de Cidade
+   ========================================================================== */
+.city-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(30, 20, 10, 0.72);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+
+.city-modal-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.city-modal-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 40px 36px 36px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(18px) scale(0.97);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.city-modal-backdrop.is-open .city-modal-card {
+  transform: translateY(0) scale(1);
+}
+
+.city-modal__icon {
+  font-size: 3rem;
+  margin-bottom: 14px;
+  line-height: 1;
+}
+
+.city-modal__title {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+
+.city-modal__subtitle {
+  color: var(--text-muted);
+  font-size: 0.93rem;
+  line-height: 1.55;
+  margin-bottom: 28px;
+}
+
+.city-modal__options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.city-option-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 18px 20px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-color);
+  background: var(--bg-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+}
+
+.city-option-btn:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.city-option-btn__icon {
+  font-size: 1.9rem;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.city-option-btn__label {
+  font-weight: 700;
+  font-size: 1.08rem;
+  color: var(--text-main);
+}
+
+.city-option-btn__desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.city-option-btn--porto-velho:hover {
+  border-color: var(--sage);
+  background: var(--sage-light);
+}
+
+.city-option-btn--nacional:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+
 /* ==========================================================================
    Cabeçalho Aconchegante (Header)
    ========================================================================== */
