@@ -44,7 +44,7 @@ function getBookPrice(book) {
 }
 
 function getCidadeLabel() {
-  if (state.cidade === 'porto-velho') return '📍 Porto Velho';
+  if (state.cidade === 'porto-velho') return '<img src="images/pvh-icon.png" alt="Porto Velho" class="pvh-icon"> Porto Velho';
   if (state.cidade === 'nacional') return '🇧🇷 Outra cidade do Brasil';
   return '';
 }
@@ -656,7 +656,7 @@ function saveCidade(cidade) {
 function updateCidadeUI() {
   if (!DOM.cityChip || !DOM.cityChipLabel) return;
   if (state.cidade) {
-    DOM.cityChipLabel.textContent = getCidadeLabel();
+    DOM.cityChipLabel.innerHTML = getCidadeLabel();
     DOM.cityChip.style.display = 'inline-flex';
   } else {
     DOM.cityChip.style.display = 'none';
